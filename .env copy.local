@@ -1,0 +1,9 @@
+NEXT_PUBLIC_LOCATION={"latitude":5.178367,"longitude":97.140541,"radius_m":200,"city":"lhokseumawe"}
+
+NEXT_PUBLIC_FOTO=true
+NEXT_PUBLIC_KANTOR=KPKNL Lhokseumawe
+
+NEXT_PUBLIC_SUPABASE_URL=https://biufylfvivihztpkfxle.supabase.co
+
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJpdWZ5bGZ2aXZpaHp0cGtmeGxlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM2MDE0MDksImV4cCI6MjEwOTE3NzQwOX0.rvqPz9wXR_rDM29mU3YM6NBu0_prU6GYxvQW8768JhQ
+#role ['admin','kepala_kantor','kasubbag']

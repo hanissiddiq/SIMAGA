@@ -1,0 +1,41 @@
+jika tidak mau login admin ikuti cara berikut
+- buat user authentication di supabase
+- pada bagian table profile isi sesuai id user yang diset sebagai admin arau is_admin = True dan jangan lupa set "Create Policy" pada table profile "SELECT" enable read for all user di supabase
+
+- pada bucket supabase juga atur 3 bucket namanya masing - masing 
+1. attendance-photos
+2.lampiran_izin
+3.surat_sakit
+set (bucket_id = 'attendance-photos'::text)
+
+buat policy dalam bucket select delete insert
+
+buat 1. RLS (Row Level Security) menolak INSERT ⭐ (paling sering)
+
+Buka Supabase Dashboard → Database → Tables → attendances → Policies pilih ALL save policy
+
+supaya aktif logbook buka Supabase Dashboard → Database → Tables → logbook ->create policy pilih select
+
+SUPAYA bisa submit logbook buat policy pada table task insert|authenticated dan select|public
+begitu juga untuk table master_leave_quota dan leave_requests dan juga task
+
+#role ['admin','kepala_kantor','kasubbag']
+
+untuk user wajib daftar di endpoit atau route /register supaya table "profile" record position bisa ['PPNPN','Supir','Satpam','CS']
+
+user admin
+hanissiddiq10@gmail.com
+mantap123
+
+user kepala
+hanissiddiq@gmail.com
+password123
+
+user kasubbag
+armstrongaceh@gmail.com
+password123
+
+
+user ppnpn
+hanis.siddiq44@guru.sma.belajar.id
+M@ntap123
