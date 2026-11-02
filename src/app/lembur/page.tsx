@@ -32,7 +32,7 @@ export default function CheckInPage() {
   const [address, setAddress] = useState<string>('Mencari alamat...');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [locationStatus, setLocationStatus] = useState<string>('Mencari lokasi...');
-  // const [shift, setShift] = useState<'pagi' | 'malam'>('pagi');
+  const [shift, setShift] = useState<'pagi' | 'malam'>('pagi');
 
   const [todayDateWib, setTodayDateWib] = useState(getTodayWIB());
   const [userId, setUserId] = useState<string | null>(null);
@@ -300,7 +300,7 @@ export default function CheckInPage() {
           <p className="text-md text-gray-500">{formattedDate}</p>
         </div>
 
-        {/* <div className="bg-white p-4 rounded-xl shadow-md border mb-4">
+        <div className="bg-white p-4 rounded-xl shadow-md border mb-4">
           <label className="font-semibold text-gray-700">Pilih Shift:</label>
           <select
             value={shift}
@@ -310,7 +310,7 @@ export default function CheckInPage() {
             <option value="pagi">Shift Pagi</option>
             <option value="malam">Shift Malam</option>
           </select>
-        </div> */}
+        </div>
 
         {attendanceToday && (
           <div className="bg-white p-4 rounded-xl shadow-md border mb-5">

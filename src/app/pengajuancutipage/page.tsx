@@ -232,194 +232,287 @@ export default function PengajuanCutiPage() {
   if (!mounted) return null
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(250,183,21,0.18),_transparent_25%),linear-gradient(180deg,#f5f8fc_0%,#edf4fb_100%)] px-4 py-6 sm:px-6 lg:px-8">
       <Toaster position="top-center" />
 
-      {/* --- FORMULIR PENGAJUAN --- */}
-      <Card className="mb-8 shadow-sm border border-gray-200">
-        <CardHeader>
-          <CardTitle className="text-lg sm:text-xl font-semibold text-gray-800">
-            Formulir Pengajuan Cuti
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            
-            {/* 1. Jenis Cuti */}
-            <div>
-              <label className="font-medium">Jenis Cuti</label>
-              <select
-                className="w-full border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
-                value={leaveType}
-                onChange={(e) => setLeaveType(e.target.value)}
-              >
-                <option value="">-- Pilih Jenis Cuti --</option>
-                <option value="Cuti Tahunan">Cuti Tahunan</option>
-                <option value="Cuti Sakit">Cuti Sakit</option>
-              </select>
-              <p className="text-xs text-gray-500 mt-1">
-                *Cuti Alasan Penting & Izin lainnya silakan gunakan menu <strong>Pengajuan Izin</strong>.
+      <div className="mx-auto max-w-7xl space-y-6">
+        <header className="djkn-header rounded-[28px] border border-white/10 p-5 shadow-[0_18px_45px_rgba(0,95,172,0.18)] sm:p-6">
+          <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+            <div className="space-y-2">
+              <div className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/80">
+                Pengajuan Cuti
+              </div>
+              <h1 className="text-2xl font-bold text-white sm:text-3xl">Formulir Pengajuan Cuti</h1>
+              <p className="max-w-2xl text-sm text-blue-100">
+                Ajukan cuti dengan proses yang jelas, cepat, dan sesuai dengan kebijakan internal DJKN.
               </p>
             </div>
 
-            {/* 2. Tanggal */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="font-medium">Tanggal Mulai</label>
-                <input type="date" className="w-full border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
-                       value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl border border-white/10 bg-white/10 p-3 backdrop-blur-sm">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-blue-100">Jenis</p>
+                <p className="mt-2 text-lg font-bold text-white">{leaveType || '—'}</p>
               </div>
-              <div>
-                <label className="font-medium">Tanggal Selesai</label>
-                <input type="date" className="w-full border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
-                       value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+              <div className="rounded-2xl border border-white/10 bg-white/10 p-3 backdrop-blur-sm">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-blue-100">Durasi</p>
+                <p className="mt-2 text-lg font-bold text-white">{currentDuration || 0} Hari</p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/10 p-3 backdrop-blur-sm">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-blue-100">Sisa Cuti</p>
+                <p className="mt-2 text-lg font-bold text-white">{leaveBalance ?? 0}</p>
               </div>
             </div>
+          </div>
+        </header>
 
-            {/* 3. Alamat */}
-            <div>
-              <label className="font-medium">Alamat Selama Cuti</label>
-              <textarea className="w-full border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
-                        value={address} onChange={(e) => setAddress(e.target.value)}
-                        placeholder="Tuliskan alamat lengkap..." />
-            </div>
-
-            {/* 4. Alasan */}
-            <div>
-              <label className="font-medium">Alasan Cuti</label>
-              <textarea className="w-full border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
-                        value={reason} onChange={(e) => setReason(e.target.value)}
-                        placeholder="Jelaskan alasan cuti..." />
-            </div>
-
-            {/* 5. Upload Surat (Khusus Sakit) */}
-            {leaveType === 'Cuti Sakit' && (
-              <div className="p-4 border-l-4 border-blue-500 bg-blue-50 rounded-md">
-                <label className="font-medium text-blue-700">Surat Keterangan Dokter</label>
-                <p className="text-xs text-gray-600 mb-2">
-                  Wajib upload surat dokter untuk Cuti Sakit.
-                </p>
-                <label htmlFor="file-upload" className={`
-                  w-full flex items-center justify-center gap-2 px-4 py-2 border rounded-md cursor-pointer 
-                  ${suratSakitFile ? 'bg-green-100 text-green-700' : 'bg-gray-100 hover:bg-gray-200'}
-                `}>
-                  <Upload size={16} />
-                  <span>{suratSakitFile ? suratSakitFile.name : 'Pilih File (Gambar/PDF)'}</span>
-                </label>
-                <input 
-                  id="file-upload"
-                  type="file" 
-                  className="hidden"
-                  accept="image/*,.pdf"
-                  onChange={(e) => setSuratSakitFile(e.target.files ? e.target.files[0] : null)}
-                />
-              </div>
-            )}
-
-            {/* 6. Opsi Tambahan */}
-            <div className="flex flex-col gap-2 pt-2">
-              <div className="flex items-center gap-2">
-                <input type="checkbox" id="halfDay" checked={halfDay} onChange={(e) => setHalfDay(e.target.checked)} />
-                <label htmlFor="halfDay" className="text-sm">Cuti Setengah Hari</label>
-              </div>
-
-              {halfDay && (
-                <div className="ml-6">
-                  <select className="border p-1 rounded text-sm"
-                          value={halfDayShift} onChange={(e) => setHalfDayShift(e.target.value as 'pagi' | 'siang')}>
-                    <option value="">- Pilih Sesi -</option>
-                    <option value="pagi">Pagi (Sampai jam 12)</option>
-                    <option value="siang">Siang (Mulai jam 13)</option>
+        <div className="grid gap-6 xl:grid-cols-[1.5fr_0.8fr]">
+          <Card className="overflow-hidden border-0 bg-white/90 shadow-[0_20px_45px_rgba(15,23,42,0.06)] backdrop-blur-sm">
+            <CardHeader className="border-b border-slate-100 bg-gradient-to-r from-[rgba(250,183,21,0.08)] to-[rgba(0,95,172,0.03)] px-5 pb-4 pt-5 sm:px-6">
+              <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[var(--djkn-gold)] text-sm font-bold text-[var(--djkn-blue)]">1</span>
+                Formulir Pengajuan
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-5 sm:p-6">
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">Jenis Cuti</label>
+                  <select
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700 shadow-sm transition focus:border-[var(--djkn-blue)] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[rgba(0,95,172,0.12)]"
+                    value={leaveType}
+                    onChange={(e) => setLeaveType(e.target.value)}
+                  >
+                    <option value="">-- Pilih Jenis Cuti --</option>
+                    <option value="Cuti Tahunan">Cuti Tahunan</option>
+                    <option value="Cuti Sakit">Cuti Sakit</option>
                   </select>
+                  <p className="mt-2 text-xs text-slate-500">
+                    *Cuti Alasan Penting & Izin lainnya silakan gunakan menu <strong className="text-[var(--djkn-blue)]">Pengajuan Izin</strong>.
+                  </p>
                 </div>
-              )}
 
-              {leaveType === 'Cuti Tahunan' && (
-                <div className="flex items-center space-x-2">
-                  <input type="checkbox" id="cutAnnual" checked={annualLeaveCut} onChange={(e) => setAnnualLeaveCut(e.target.checked)} />
-                  <label htmlFor="cutAnnual" className="text-sm">Potong Kuota Cuti Tahunan</label>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-sm font-semibold text-slate-700">Tanggal Mulai</label>
+                    <input
+                      type="date"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700 shadow-sm transition focus:border-[var(--djkn-blue)] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[rgba(0,95,172,0.12)]"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-sm font-semibold text-slate-700">Tanggal Selesai</label>
+                    <input
+                      type="date"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700 shadow-sm transition focus:border-[var(--djkn-blue)] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[rgba(0,95,172,0.12)]"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                    />
+                  </div>
                 </div>
-              )}
-            </div>
 
-            {/* Info Sisa Cuti */}
-            {leaveBalance !== null && (
-              <div className="p-3 bg-green-50 border border-green-200 text-green-800 rounded-md text-sm text-center">
-                Sisa Kuota Cuti Tahunan Anda: <strong>{leaveBalance}</strong> hari
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">Alamat Selama Cuti</label>
+                  <textarea
+                    className="min-h-[90px] w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700 shadow-sm transition focus:border-[var(--djkn-blue)] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[rgba(0,95,172,0.12)]"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="Tuliskan alamat lengkap..."
+                  />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-700">Alasan Cuti</label>
+                  <textarea
+                    className="min-h-[110px] w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700 shadow-sm transition focus:border-[var(--djkn-blue)] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[rgba(0,95,172,0.12)]"
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                    placeholder="Jelaskan alasan cuti ..."
+                  />
+                </div>
+
+                {leaveType === 'Cuti Sakit' && (
+                  <div className="rounded-2xl border border-[rgba(0,95,172,0.18)] bg-[rgba(0,95,172,0.04)] p-4">
+                    <label className="mb-1 block text-sm font-semibold text-[var(--djkn-blue)]">Surat Keterangan Dokter</label>
+                    <p className="mb-3 text-xs text-slate-600">Wajib upload surat dokter untuk Cuti Sakit.</p>
+                    <label
+                      htmlFor="file-upload"
+                      className={`flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed px-4 py-3 text-sm font-medium transition ${
+                        suratSakitFile
+                          ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
+                          : 'border-[var(--djkn-blue)]/30 bg-white text-[var(--djkn-blue)] hover:bg-blue-50'
+                      }`}
+                    >
+                      <Upload size={16} />
+                      <span>{suratSakitFile ? suratSakitFile.name : 'Pilih File (Gambar/PDF)'}</span>
+                    </label>
+                    <input
+                      id="file-upload"
+                      type="file"
+                      className="hidden"
+                      accept="image/*,.pdf"
+                      onChange={(e) => setSuratSakitFile(e.target.files ? e.target.files[0] : null)}
+                    />
+                  </div>
+                )}
+
+                <div className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <label className="flex items-center gap-3 text-sm font-medium text-slate-700">
+                    <input
+                      type="checkbox"
+                      id="halfDay"
+                      checked={halfDay}
+                      onChange={(e) => setHalfDay(e.target.checked)}
+                      className="h-4 w-4 accent-[var(--djkn-blue)]"
+                    />
+                    Cuti Setengah Hari
+                  </label>
+
+                  {halfDay && (
+                    <div className="ml-7">
+                      <select
+                        className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-[var(--djkn-blue)] focus:outline-none focus:ring-4 focus:ring-[rgba(0,95,172,0.12)]"
+                        value={halfDayShift}
+                        onChange={(e) => setHalfDayShift(e.target.value as 'pagi' | 'siang')}
+                      >
+                        <option value="">- Pilih Sesi -</option>
+                        <option value="pagi">Pagi (Sampai jam 12)</option>
+                        <option value="siang">Siang (Mulai jam 13)</option>
+                      </select>
+                    </div>
+                  )}
+
+                  {leaveType === 'Cuti Tahunan' && (
+                    <label className="flex items-center gap-3 text-sm font-medium text-slate-700">
+                      <input
+                        type="checkbox"
+                        id="cutAnnual"
+                        checked={annualLeaveCut}
+                        onChange={(e) => setAnnualLeaveCut(e.target.checked)}
+                        className="h-4 w-4 accent-[var(--djkn-gold)]"
+                      />
+                      Potong Kuota Cuti Tahunan
+                    </label>
+                  )}
+                </div>
+
+                {leaveBalance !== null && (
+                  <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-center text-sm font-medium text-emerald-800">
+                    Sisa Kuota Cuti Tahunan Anda: <strong>{leaveBalance}</strong> hari
+                  </div>
+                )}
+
+                {isInvalidDuration && (
+                  <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-center text-xs font-semibold text-red-600">
+                    ⚠️ Pengajuan maksimal 3 hari. Durasi terpilih: {currentDuration} hari.
+                  </p>
+                )}
+
+                <button
+                  type="submit"
+                  className={`flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold shadow-lg transition ${
+                    loading || isInvalidDuration
+                      ? 'cursor-not-allowed bg-slate-300 text-slate-600 shadow-none'
+                      : 'bg-[var(--djkn-gold)] text-[var(--djkn-blue)] hover:-translate-y-0.5 hover:bg-[#e0a600]'
+                  }`}
+                  disabled={loading || isInvalidDuration}
+                >
+                  {loading ? <Loader2 size={18} className="animate-spin" /> : 'Kirim Pengajuan'}
+                </button>
+              </form>
+            </CardContent>
+          </Card>
+
+          <div className="space-y-6">
+            <Card className="border-0 bg-white/90 shadow-[0_20px_45px_rgba(15,23,42,0.06)]">
+              <CardHeader className="border-b border-slate-100 px-5 pb-4 pt-5">
+                <CardTitle className="text-base font-semibold text-slate-800">Informasi Penting</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 p-5">
+                <div className="rounded-2xl bg-[rgba(0,95,172,0.06)] p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--djkn-blue)]">Aturan</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-700">
+                    Maksimal pengajuan cuti adalah <span className="font-bold text-[var(--djkn-blue)]">3 hari</span> dalam satu form.
+                  </p>
+                </div>
+
+                <div className="rounded-2xl bg-[rgba(250,183,21,0.1)] p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--djkn-blue)]">Status</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-700">
+                    Pengajuan akan diproses sesuai dengan sistem persetujuan dan status yang berlaku di kantor.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 bg-[linear-gradient(135deg,#005fac_0%,#0a6bb8_100%)] text-white shadow-[0_20px_45px_rgba(0,95,172,0.28)]">
+              <CardContent className="p-5">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-100">Catatan</p>
+                <h2 className="mt-2 text-xl font-bold">Proses Pengajuan</h2>
+                <ul className="mt-4 space-y-3 text-sm text-blue-50">
+                  <li className="flex items-start gap-3"><span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[var(--djkn-gold)] text-[10px] font-bold text-[var(--djkn-blue)]">1</span> Isi formulir dengan lengkap</li>
+                  <li className="flex items-start gap-3"><span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[var(--djkn-gold)] text-[10px] font-bold text-[var(--djkn-blue)]">2</span> Unggah dokumen pendukung bila diperlukan</li>
+                  <li className="flex items-start gap-3"><span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[var(--djkn-gold)] text-[10px] font-bold text-[var(--djkn-blue)]">3</span> Tunggu persetujuan resmi dari pihak berwenang</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        <Card className="overflow-hidden border-0 bg-white/90 shadow-[0_20px_45px_rgba(15,23,42,0.06)]">
+          <CardHeader className="flex flex-col gap-3 border-b border-slate-100 px-5 pb-4 pt-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+            <CardTitle className="text-lg font-semibold text-slate-800">Riwayat Pengajuan</CardTitle>
+            <input
+              type="text"
+              placeholder="Cari data..."
+              className="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700 shadow-sm transition focus:border-[var(--djkn-blue)] focus:bg-white focus:outline-none focus:ring-4 focus:ring-[rgba(0,95,172,0.12)] sm:w-64"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </CardHeader>
+          <CardContent className="p-0 sm:p-0">
+            {filteredRequests.length === 0 ? (
+              <div className="p-8 text-center text-sm text-slate-500">Belum ada riwayat pengajuan cuti.</div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full table-auto border-collapse text-left text-xs sm:text-sm">
+                  <thead className="bg-slate-100 text-slate-700">
+                    <tr>
+                      <th className="border-b border-slate-200 p-3 font-semibold">Jenis</th>
+                      <th className="border-b border-slate-200 p-3 font-semibold">Tanggal</th>
+                      <th className="border-b border-slate-200 p-3 text-center font-semibold">Durasi</th>
+                      <th className="border-b border-slate-200 p-3 text-center font-semibold">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredRequests.map((lr) => (
+                      <tr key={lr.id} className="transition hover:bg-slate-50">
+                        <td className="border-b border-slate-200 p-3 font-medium text-slate-800">{lr.leave_type}</td>
+                        <td className="border-b border-slate-200 p-3 text-slate-600">{lr.start_date} s.d. {lr.end_date}</td>
+                        <td className="border-b border-slate-200 p-3 text-center text-slate-600">{lr.half_day ? '½ Hari' : `${lr.durasi_hari_kerja ?? '-'} Hari`}</td>
+                        <td className="border-b border-slate-200 p-3 text-center">
+                          <span
+                            className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${
+                              lr.status === 'Disetujui'
+                                ? 'border border-emerald-200 bg-emerald-100 text-emerald-700'
+                                : lr.status === 'Ditolak'
+                                  ? 'border border-red-200 bg-red-100 text-red-700'
+                                  : 'border border-yellow-200 bg-yellow-100 text-yellow-700'
+                            }`}
+                          >
+                            {lr.status}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             )}
-
-            {/* --- LOGIKA BARU: Pesan Peringatan Merah --- */}
-            {isInvalidDuration && (
-              <p className="text-red-500 text-xs font-medium text-center bg-red-50 p-2 rounded border border-red-100">
-                ⚠️ Pengajuan maksimal 3 hari. Durasi terpilih: {currentDuration} hari.
-              </p>
-            )}
-
-            {/* --- LOGIKA BARU: Update Tombol Submit (Disabled state) --- */}
-            <button type="submit"
-                    className={`w-full py-2.5 rounded-md transition flex items-center justify-center font-medium shadow-sm 
-                      ${(loading || isInvalidDuration) ? 'bg-gray-400 cursor-not-allowed text-white' : 'bg-blue-700 text-white hover:bg-blue-800'}`}
-                    disabled={loading || isInvalidDuration}>
-              {loading ? <Loader2 size={20} className="animate-spin" /> : 'Kirim Pengajuan'}
-            </button>
-          </form>
-        </CardContent>
-      </Card>
-
-      {/* --- RIWAYAT PENGAJUAN (Tidak Berubah) --- */}
-      <Card className="shadow-sm border border-gray-200">
-        <CardHeader className="flex flex-col sm:flex-row justify-between items-center gap-2 pb-2">
-          <CardTitle className="text-lg font-semibold text-gray-800">Riwayat Pengajuan</CardTitle>
-          <input
-            type="text"
-            placeholder="Cari data..."
-            className="border p-2 rounded-md focus:ring-2 focus:ring-blue-500 w-full sm:w-64 text-sm"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </CardHeader>
-        <CardContent>
-          {filteredRequests.length === 0 ? (
-            <p className="text-gray-500 text-sm text-center py-6">Belum ada riwayat pengajuan cuti.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full table-auto border-collapse text-xs sm:text-sm text-left">
-                <thead className="bg-gray-100 text-gray-700">
-                  <tr>
-                    <th className="p-3 border font-semibold">Jenis</th>
-                    <th className="p-3 border font-semibold">Tanggal</th>
-                    <th className="p-3 border font-semibold text-center">Durasi</th>
-                    <th className="p-3 border font-semibold text-center">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredRequests.map((lr) => (
-                    <tr key={lr.id} className="hover:bg-gray-50 transition border-b">
-                      <td className="p-3 border font-medium text-gray-800">{lr.leave_type}</td>
-                      <td className="p-3 border text-gray-600">
-                        {lr.start_date} s.d. {lr.end_date}
-                      </td>
-                      <td className="p-3 border text-center text-gray-600">
-                        {lr.half_day ? '½ Hari' : `${lr.durasi_hari_kerja ?? '-'} Hari`}
-                      </td>
-                      <td className="p-3 border text-center">
-                        <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
-                          lr.status === 'Disetujui' ? 'bg-green-100 text-green-700 border border-green-200' :
-                          lr.status === 'Ditolak' ? 'bg-red-100 text-red-700 border border-red-200' :
-                          'bg-yellow-100 text-yellow-700 border border-yellow-200'
-                        }`}>
-                          {lr.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

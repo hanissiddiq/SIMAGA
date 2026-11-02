@@ -198,204 +198,210 @@ const handleSubmit = async (e: React.FormEvent) => {
   if (!mounted) return null
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(250,183,21,0.18),transparent_28%),linear-gradient(180deg,#f5f8fc_0%,#edf4fb_100%)] p-4 font-sans text-slate-800 sm:p-6">
       <Toaster position="top-center" />
-      <div className="flex items-center mb-6 space-x-2 text-blue-700 hover:text-blue-900 transition cursor-pointer"
-           onClick={() => router.push('/dashboard')}>
-        <ArrowLeft size={22} />
-        <h1 className="text-xl sm:text-2xl font-semibold">Pengajuan Izin</h1>
-      </div>
 
-      {/* FORM */}
-      <Card className="mb-8 shadow-sm border border-gray-200">
-        <CardHeader>
-          <CardTitle className="text-lg sm:text-xl font-semibold text-gray-800">
-            Formulir Pengajuan Izin
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Jenis Izin */}
-            <div>
-              <label className="font-medium">Jenis Izin</label>
-              <select
-                className="w-full border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
-                value={jenisIzin}
-                onChange={(e) => setJenisIzin(e.target.value)}
-              >
-                <option value="">Pilih Jenis Izin...</option>
-                <option value="Lupa Absen Masuk">Lupa Absen Masuk</option>
-                <option value="Lupa Absen Pulang">Lupa Absen Pulang</option>
-                <option value="Meninggalkan Kantor">Meninggalkan Kantor (Keperluan Pribadi)</option>
-                <option value="Keperluan Mendesak (Pribadi)">Keperluan Mendesak (Pribadi)</option>
-                <option value="Sakit (Tanpa Kuota Cuti)">Sakit (Tanpa Kuota Cuti Tahunan)</option>
-                {/* Tambahan Opsi Izin */}
-                <option value="Perjalanan Dinas (ST)">Perjalan Dinas (ST)</option>
-                {/* Tambahan Opsi Izin */}
-                <option value="Izin Terlambat">Izin Terlambat</option>
-                
-              </select>
-            </div>
+      <div className="mx-auto max-w-6xl">
+        <div
+          className="mb-6 flex cursor-pointer items-center gap-3 rounded-[26px] border border-white/60 bg-[var(--djkn-blue)] px-4 py-4 text-white shadow-[0_20px_45px_rgba(0,95,172,0.18)] transition hover:bg-[#004d8a]"
+          onClick={() => router.push('/dashboard')}
+        >
+          <ArrowLeft size={22} />
+          <h1 className="text-lg font-black sm:text-2xl">Pengajuan Izin</h1>
+        </div>
 
-            {/* Tanggal */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="font-medium">Tanggal Mulai</label>
-                <input type="date" className="w-full border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
-                       value={tanggalMulai} onChange={(e) => setTanggalMulai(e.target.value)} />
-              </div>
-              <div>
-                <label className="font-medium">Tanggal Selesai</label>
-                <input type="date" className="w-full border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
-                       value={tanggalSelesai} onChange={(e) => setTanggalSelesai(e.target.value)} />
-              </div>
-            </div>
-
-            {/* Opsi Setengah Hari (UPDATE: Pilihan Shift Pagi/Malam) */}
-            <div className="flex flex-col gap-2 pt-2">
-                <div className="flex items-center gap-2">
-                    <input 
-                        type="checkbox" 
-                        id="halfDay" 
-                        checked={halfDay} 
-                        onChange={(e) => setHalfDay(e.target.checked)} 
-                        className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
-                    />
-                    <label htmlFor="halfDay" className="text-sm font-medium text-gray-700">Izin Setengah Hari</label>
+        <div className="grid gap-6 xl:grid-cols-[1.1fr_1.3fr]">
+          <Card className="border border-white/70 bg-white/90 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+            <CardHeader className="border-b border-slate-200 pb-4">
+              <CardTitle className="text-lg font-black text-slate-900 sm:text-xl">
+                Formulir Pengajuan Izin
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-5">
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div>
+                  <label className="mb-2 block text-sm font-bold uppercase tracking-[0.15em] text-slate-600">Jenis Izin</label>
+                  <select
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 p-3.5 text-sm text-slate-700 outline-none transition focus:border-[var(--djkn-gold)] focus:bg-white focus:ring-4 focus:ring-[var(--djkn-gold)]/15"
+                    value={jenisIzin}
+                    onChange={(e) => setJenisIzin(e.target.value)}
+                  >
+                    <option value="">Pilih Jenis Izin...</option>
+                    <option value="Lupa Absen Masuk">Lupa Absen Masuk</option>
+                    <option value="Lupa Absen Pulang">Lupa Absen Pulang</option>
+                    <option value="Meninggalkan Kantor">Meninggalkan Kantor (Keperluan Pribadi)</option>
+                    <option value="Keperluan Mendesak (Pribadi)">Keperluan Mendesak (Pribadi)</option>
+                    <option value="Sakit (Tanpa Kuota Cuti)">Sakit (Tanpa Kuota Cuti Tahunan)</option>
+                    <option value="Perjalanan Dinas (ST)">Perjalanan Dinas (ST)</option>
+                    <option value="Izin Terlambat">Izin Terlambat</option>
+                  </select>
                 </div>
 
-                {halfDay && (
-                    <div className="ml-6 animate-in slide-in-from-top-2 duration-200">
-                        <select 
-                            className="border p-2 rounded-md text-sm w-full sm:w-auto bg-white focus:ring-2 focus:ring-blue-500"
-                            value={halfDayShift} 
-                            onChange={(e) => setHalfDayShift(e.target.value as 'pagi' | 'malam')}
-                        >
-                            <option value="">-- Pilih Shift --</option>
-                            <option value="pagi">Shift Pagi</option>
-                            <option value="malam">Shift Malam</option>
-                        </select>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-2 block text-sm font-bold uppercase tracking-[0.15em] text-slate-600">Tanggal Mulai</label>
+                    <input
+                      type="date"
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 p-3.5 text-sm text-slate-700 outline-none transition focus:border-[var(--djkn-gold)] focus:bg-white focus:ring-4 focus:ring-[var(--djkn-gold)]/15"
+                      value={tanggalMulai}
+                      onChange={(e) => setTanggalMulai(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-2 block text-sm font-bold uppercase tracking-[0.15em] text-slate-600">Tanggal Selesai</label>
+                    <input
+                      type="date"
+                      className="w-full rounded-2xl border border-slate-200 bg-slate-50 p-3.5 text-sm text-slate-700 outline-none transition focus:border-[var(--djkn-gold)] focus:bg-white focus:ring-4 focus:ring-[var(--djkn-gold)]/15"
+                      value={tanggalSelesai}
+                      onChange={(e) => setTanggalSelesai(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-3.5">
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      id="halfDay"
+                      checked={halfDay}
+                      onChange={(e) => setHalfDay(e.target.checked)}
+                      className="h-4 w-4 rounded border-slate-300 text-[var(--djkn-blue)] focus:ring-[var(--djkn-gold)]"
+                    />
+                    <label htmlFor="halfDay" className="text-sm font-semibold text-slate-700">Izin Setengah Hari</label>
+                  </div>
+
+                  {halfDay && (
+                    <div className="mt-3">
+                      <select
+                        className="w-full rounded-2xl border border-slate-200 bg-white p-3 text-sm text-slate-700 outline-none transition focus:border-[var(--djkn-gold)] focus:ring-4 focus:ring-[var(--djkn-gold)]/15 sm:w-auto"
+                        value={halfDayShift}
+                        onChange={(e) => setHalfDayShift(e.target.value as 'pagi' | 'malam')}
+                      >
+                        <option value="">-- Pilih Shift --</option>
+                        <option value="pagi">Shift Pagi</option>
+                        <option value="malam">Shift Malam</option>
+                      </select>
                     </div>
-                )}
-            </div>
+                  )}
+                </div>
 
-            {/* Alasan */}
-            <div>
-              <label className="font-medium">Alasan / Keterangan</label>
-              <textarea className="w-full border p-2 rounded-md focus:ring-2 focus:ring-blue-500"
-                        value={alasan} onChange={(e) => setAlasan(e.target.value)}
-                        placeholder="Tuliskan alasan/keterangan izin..." />
-            </div>
+                <div>
+                  <label className="mb-2 block text-sm font-bold uppercase tracking-[0.15em] text-slate-600">Alasan / Keterangan</label>
+                  <textarea
+                    className="w-full rounded-2xl border border-slate-200 bg-slate-50 p-3.5 text-sm text-slate-700 outline-none transition focus:border-[var(--djkn-gold)] focus:bg-white focus:ring-4 focus:ring-[var(--djkn-gold)]/15"
+                    value={alasan}
+                    onChange={(e) => setAlasan(e.target.value)}
+                    placeholder="Tuliskan alasan/keterangan izin..."
+                    rows={4}
+                  />
+                </div>
 
-            {/* Lampiran */}
-<div>
-  <label className="font-medium">Lampiran (Opsional)</label>
-  <input
-    type="file"
-    accept=".pdf,.jpg,.jpeg,.png"
-    onChange={(e) => {
-      const file = e.target.files?.[0] || null;
-      if (file && file.size > 2 * 1024 * 1024) {
-        toast.error('File terlalu besar (Maks 2MB)');
-        e.target.value = ''; // Reset input
-        setLampiran(null);
-      } else {
-        setLampiran(file);
-      }
-    }}
-    className="w-full text-sm text-gray-500
-      file:mr-4 file:py-2 file:px-4
-      file:rounded-md file:border-0
-      file:text-sm file:font-semibold
-      file:bg-blue-50 file:text-blue-700
-      hover:file:bg-blue-100"
-  />
-  <p className="text-xs text-gray-500 mt-1">
-    Format: PDF, JPG, PNG (Maksimal 2MB).
-  </p>
-</div>
+                <div>
+                  <label className="mb-2 block text-sm font-bold uppercase tracking-[0.15em] text-slate-600">Lampiran (Opsional)</label>
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] || null
+                      if (file && file.size > 2 * 1024 * 1024) {
+                        toast.error('File terlalu besar (Maks 2MB)')
+                        e.target.value = ''
+                        setLampiran(null)
+                      } else {
+                        setLampiran(file)
+                      }
+                    }}
+                    className="w-full rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-3 text-sm text-slate-500 file:mr-4 file:rounded-xl file:border-0 file:bg-[var(--djkn-blue)]/10 file:px-4 file:py-2 file:text-sm file:font-bold file:text-[var(--djkn-blue)] hover:file:bg-[var(--djkn-blue)]/15"
+                  />
+                  <p className="mt-2 text-xs text-slate-500">Format: PDF, JPG, PNG (Maksimal 2MB).</p>
+                </div>
 
-            <button type="submit"
-                    className="w-full bg-blue-700 text-white p-2 rounded-md hover:bg-blue-800 transition flex items-center justify-center"
-                    disabled={loading}>
-              {loading ? <Loader2 size={18} className="animate-spin" /> : 'Ajukan Izin'}
-            </button>
-          </form>
-        </CardContent>
-      </Card>
+                <button
+                  type="submit"
+                  className="flex w-full items-center justify-center gap-2 rounded-[22px] bg-[var(--djkn-gold)] px-4 py-3.5 text-base font-black text-slate-900 shadow-[0_16px_30px_rgba(250,183,21,0.25)] transition hover:bg-[#f4bb2d] disabled:cursor-not-allowed disabled:opacity-70"
+                  disabled={loading}
+                >
+                  {loading ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
+                  {loading ? 'Mengirim...' : 'Ajukan Izin'}
+                </button>
+              </form>
+            </CardContent>
+          </Card>
 
-      {/* RIWAYAT */}
-      <Card className="shadow-sm border border-gray-200">
-        <CardHeader className="flex flex-col sm:flex-row justify-between items-center gap-2">
-          <CardTitle className="text-lg font-semibold text-gray-800">Riwayat Pengajuan Izin</CardTitle>
-          <input
-            type="text"
-            placeholder="Cari data..."
-            className="border p-2 rounded-md focus:ring-2 focus:ring-blue-500 w-full sm:w-64"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </CardHeader>
-        <CardContent>
-          {filteredRequests.length === 0 ? (
-            <p className="text-gray-600 text-sm text-center py-2">Belum ada pengajuan izin</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs sm:text-sm text-center border-collapse">
-                <thead className="bg-gray-100 text-gray-700">
-                  <tr>
-                    <th className="p-2 border">Jenis Izin</th>
-                    <th className="p-2 border">Tanggal</th>
-                    <th className="p-2 border">Durasi</th>
-                    <th className="p-2 border">Potong Gaji</th>
-                    <th className="p-2 border">Lampiran</th>
-                    <th className="p-2 border">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredRequests.map((r) => (
-                    <tr key={r.id} className="hover:bg-gray-50 transition">
-                      <td className="p-2 border">{r.jenis_izin}</td>
-                      <td className="p-2 border">
-                        {r.tanggal_mulai} – {r.tanggal_selesai}
-                      </td>
-                      <td className="p-2 border">
-                        {r.half_day 
-                            ? `½ Hari (${r.half_day_shift === 'pagi' ? 'Shift Pagi' : 'Shift Malam'})` 
-                            : `${r.durasi_hari_kerja ?? '?'} Hari`
-                        }
-                      </td>
-                      <td className="p-2 border">
-                        {r.potong_gaji ? 'Ya' : 'Tidak'}
-                      </td>
-                      <td className="p-2 border">
-                        {r.lampiran_url ? (
-                          <a href={r.lampiran_url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                            Lihat
-                          </a>
-                        ) : (
-                          '-'
-                        )}
-                      </td>
-                      <td className="p-2 border">
-                        <span className={`px-2 py-1 rounded-full text-xs ${
-                          r.status === 'Disetujui'
-                            ? 'bg-green-200 text-green-800'
-                            : r.status === 'Ditolak'
-                            ? 'bg-red-200 text-red-800'
-                            : 'bg-yellow-200 text-yellow-800'
-                        }`}>
-                          {r.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+          <Card className="border border-white/70 bg-white/90 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+            <CardHeader className="flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
+              <CardTitle className="text-lg font-black text-slate-900">Riwayat Pengajuan Izin</CardTitle>
+              <input
+                type="text"
+                placeholder="Cari data..."
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[var(--djkn-gold)] focus:bg-white focus:ring-4 focus:ring-[var(--djkn-gold)]/15 sm:w-64"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </CardHeader>
+            <CardContent className="pt-5">
+              {filteredRequests.length === 0 ? (
+                <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 p-8 text-center text-sm text-slate-500">
+                  Belum ada pengajuan izin
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse text-left text-xs sm:text-sm">
+                    <thead>
+                      <tr className="bg-slate-100 text-slate-700">
+                        <th className="border border-slate-200 p-2.5 font-bold">Jenis Izin</th>
+                        <th className="border border-slate-200 p-2.5 font-bold">Tanggal</th>
+                        <th className="border border-slate-200 p-2.5 font-bold">Durasi</th>
+                        <th className="border border-slate-200 p-2.5 font-bold">Potong Gaji</th>
+                        <th className="border border-slate-200 p-2.5 font-bold">Lampiran</th>
+                        <th className="border border-slate-200 p-2.5 font-bold">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredRequests.map((r) => (
+                        <tr key={r.id} className="transition hover:bg-slate-50">
+                          <td className="border border-slate-200 p-2.5 text-slate-700">{r.jenis_izin}</td>
+                          <td className="border border-slate-200 p-2.5 text-slate-700">
+                            {r.tanggal_mulai} – {r.tanggal_selesai}
+                          </td>
+                          <td className="border border-slate-200 p-2.5 text-slate-700">
+                            {r.half_day
+                              ? `½ Hari (${r.half_day_shift === 'pagi' ? 'Shift Pagi' : 'Shift Malam'})`
+                              : `${r.durasi_hari_kerja ?? '?'} Hari`}
+                          </td>
+                          <td className="border border-slate-200 p-2.5 text-slate-700">{r.potong_gaji ? 'Ya' : 'Tidak'}</td>
+                          <td className="border border-slate-200 p-2.5">
+                            {r.lampiran_url ? (
+                              <a href={r.lampiran_url} target="_blank" rel="noopener noreferrer" className="font-semibold text-[var(--djkn-blue)] hover:underline">
+                                Lihat
+                              </a>
+                            ) : (
+                              <span className="text-slate-400">-</span>
+                            )}
+                          </td>
+                          <td className="border border-slate-200 p-2.5">
+                            <span
+                              className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.12em] ${
+                                r.status === 'Disetujui'
+                                  ? 'bg-emerald-100 text-emerald-800'
+                                  : r.status === 'Ditolak'
+                                  ? 'bg-red-100 text-red-800'
+                                  : 'bg-[var(--djkn-gold)]/15 text-amber-800'
+                              }`}
+                            >
+                              {r.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   )
 }

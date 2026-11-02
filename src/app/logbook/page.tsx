@@ -85,6 +85,20 @@ export default function LogbookPage() {
     "Lainnya"
   ]
 
+  const tugasMahasiswa = [
+    "Membantu dokumentasi kegiatan kantor dan kegiatan magang",
+    "Mengolah data arsip dan menata berkas administrasi",
+    "Membantu desain materi promosi atau presentasi sederhana",
+    "Membantu input data ke aplikasi atau spreadsheet",
+    "Membantu pengelolaan dokumen dan file digital kantor",
+    "Menyusun laporan harian atau mingguan kegiatan magang",
+    "Membantu pegawai dalam tugas administrasi dan pelayanan",
+    "Melakukan pengecekan kehadiran dan pendataan data pegawai",
+    "Mencatat serta merapikan dokumen penting dan surat masuk/keluar",
+    "Membantu riset singkat, survei, atau pengumpulan data pendukung",
+    "Lainnya"
+  ]
+
   // --- FETCH DATA UTAMA ---
   useEffect(() => {
     const fetchData = async () => {
@@ -107,8 +121,14 @@ export default function LogbookPage() {
         if (position.toLowerCase().includes('satpam')) setStandardTasks(tugasSatpam)
         else if (position.toLowerCase().includes('supir')) setStandardTasks(tugasSupir)
         else if (position.toLowerCase().includes('cs')) setStandardTasks(tugasCS)
+        else if (
+          position.toLowerCase().includes('mahasiswa') ||
+          position.toLowerCase().includes('magang') ||
+          position.toLowerCase().includes('intern') ||
+          position.toLowerCase().includes('praktikan')
+        ) setStandardTasks(tugasMahasiswa)
         else if (position) setStandardTasks(tugasPPNPN)
-        else setStandardTasks([])
+        else setStandardTasks(tugasMahasiswa)
 
         // 2. CARI ATTENDANCE YANG BELUM CHECKOUT (Logic Diperbaiki)
         // Kita cari data absen user ini yang kolom 'check_out' nya masih NULL
@@ -257,94 +277,86 @@ export default function LogbookPage() {
   }
 
   if (isLoading) return (
-    <div className="flex h-screen items-center justify-center bg-gray-50">
-      <div className="text-center">
-        <RefreshCw className="animate-spin text-blue-600 w-8 h-8 mx-auto mb-2" />
-        <span className="text-gray-600 font-medium">Memuat Logbook Shift Aktif...</span>
+    <div className="flex h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(250,183,21,0.16),transparent_25%),linear-gradient(180deg,#f4f7fb_0%,#edf4fc_100%)]">
+      <div className="rounded-[28px] border border-white/80 bg-white/80 px-8 py-6 text-center shadow-[0_20px_50px_rgba(0,95,172,0.12)] backdrop-blur-sm">
+        <RefreshCw className="mx-auto mb-3 h-8 w-8 animate-spin text-[var(--djkn-blue)]" />
+        <span className="text-base font-semibold text-slate-700">Memuat Logbook Shift Aktif...</span>
       </div>
     </div>
   )
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 font-sans">
-      <header className="flex items-center justify-between mb-6">
-        <button onClick={() => router.back()} className="flex items-center text-blue-700 font-medium hover:underline">
-          <ChevronLeft size={20} className="mr-1" /> Kembali
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(250,183,21,0.18),transparent_28%),linear-gradient(180deg,#f5f8fc_0%,#edf4fb_100%)] p-4 font-sans text-slate-800 sm:p-6">
+      <header className="mb-6 flex items-center justify-between gap-3">
+        <button onClick={() => router.back()} className="flex items-center gap-1 rounded-full border border-[var(--djkn-blue)]/20 bg-white/80 px-3 py-2 text-sm font-semibold text-[var(--djkn-blue)] shadow-sm transition hover:bg-white">
+          <ChevronLeft size={18} /> Kembali
         </button>
-        <h1 className="text-2xl font-bold text-gray-800 flex items-center">
-          <FileText className="mr-2 text-blue-600" /> Logbook
-        </h1>
+        <div className="flex items-center gap-2 rounded-full border border-[var(--djkn-gold)]/30 bg-[var(--djkn-gold)]/10 px-3 py-2 text-[var(--djkn-blue)] shadow-sm">
+          <FileText size={18} className="font-bold" />
+          <h1 className="text-base font-black sm:text-lg">Logbook</h1>
+        </div>
       </header>
 
-      {/* INFO ABSEN AKTIF + TOMBOL CEKLIST RUANGAN */}
       {!error && (
-        <div className="bg-white p-5 rounded-xl shadow-sm border-l-4 border-blue-500 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="mb-6 overflow-hidden rounded-[28px] border border-white/80 bg-white/90 p-5 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur-sm md:flex md:items-center md:justify-between md:gap-4">
           <div>
-            <p className="text-xs text-gray-500 font-bold uppercase tracking-wide">Logbook Untuk Sesi:</p>
-            <p className="text-lg font-bold text-gray-800 mt-1">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Logbook Untuk Sesi</p>
+            <p className="mt-2 text-2xl font-black text-slate-800">
               SHIFT {shiftName ? shiftName.toUpperCase() : '-'}
             </p>
-            <p className="text-sm text-gray-600">
-              {attendanceDate}
-            </p>
-            <div className={`inline-block mt-2 px-3 py-1 rounded-full text-[10px] font-bold ${statusLogbook === 'COMPLETED' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-              {statusLogbook === 'COMPLETED' ? 'STATUS: SELESAI' : 'STATUS: BELUM SELESAI'}
+            <p className="mt-1 text-sm text-slate-600">{attendanceDate}</p>
+            <div className={`mt-3 inline-block rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] ${statusLogbook === 'COMPLETED' ? 'bg-emerald-100 text-emerald-700' : 'bg-[var(--djkn-gold)]/20 text-amber-800'}`}>
+              {statusLogbook === 'COMPLETED' ? 'Status: Selesai' : 'Status: Belum Selesai'}
             </div>
           </div>
 
-          {/* TOMBOL KE LINK CEKLIST RUANGAN */}
-          <div className="flex flex-col gap-2">
-            <label className="text-[10px] font-bold text-gray-400 uppercase">Input Khusus Ruangan:</label>
+          {/* <div className="mt-4 md:mt-0">
+            <label className="mb-2 block text-[10px] font-bold uppercase tracking-[0.18em] text-slate-500">Input Khusus Ruangan</label>
             <a 
               href={checklistUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-5 py-3 rounded-xl font-bold text-sm shadow-md shadow-orange-200 transition-all active:scale-95"
+              className="flex items-center justify-center gap-2 rounded-2xl bg-[var(--djkn-gold)] px-5 py-3 text-sm font-black text-slate-900 shadow-[0_16px_30px_rgba(250,183,21,0.25)] transition hover:bg-[#f4bb2d]"
             >
               <ClipboardCheck size={18} />
               Buka Form Checklist Ruangan
               <ExternalLink size={14} className="opacity-70" />
             </a>
-          </div>
+          </div> */}
         </div>
       )}
 
-      {/* ERROR MESSAGE */}
       {error && (
-        <div className="mb-6 flex flex-col items-center justify-center bg-red-50 text-red-800 border border-red-200 rounded-lg p-6 text-center">
-          <AlertTriangle size={32} className="mb-2 text-red-600" />
-          <p className="font-bold text-lg mb-1">Akses Ditolak</p>
-          <p className="text-sm">{error}</p>
-          <button onClick={() => router.push('/checkinpage')} className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-700">
+        <div className="mb-6 flex flex-col items-center justify-center rounded-[28px] border border-red-200 bg-red-50 p-8 text-center text-red-800 shadow-sm">
+          <AlertTriangle size={34} className="mb-3 text-red-600" />
+          <p className="mb-1 text-xl font-black">Akses Ditolak</p>
+          <p className="text-sm text-red-700">{error}</p>
+          <button onClick={() => router.push('/checkinpage')} className="mt-5 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-red-700">
             Pergi ke Absen Masuk
           </button>
         </div>
       )}
 
-      {/* FORM LOGBOOK */}
       {!error && (
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-6 space-y-6">
-          
-          {/* Header Info (ReadOnly) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-4 border-b border-gray-100">
+        <form onSubmit={handleSubmit} className="space-y-6 rounded-[30px] border border-white/80 bg-white/90 p-5 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur-sm sm:p-6">
+          <div className="grid grid-cols-1 gap-5 border-b border-slate-200 pb-5 md:grid-cols-2">
             <Input label="Nama Pegawai" value={userData.fullName} icon={User} readOnly />
             <Input label="Jabatan" value={userData.position} icon={Briefcase} readOnly />
           </div>
 
-          {/* Task Input Section */}
-          <div className="space-y-3">
-            <label className="text-sm font-bold text-gray-700">Daftar Tugas / Pekerjaan</label>
-            
-            <div className="flex gap-2">
+          <div className="space-y-4">
+            <label className="text-sm font-black uppercase tracking-[0.15em] text-slate-600">Daftar Tugas / Pekerjaan</label>
+
+            <div className="flex flex-col gap-3 sm:flex-row">
               <select
                 value={selectedTask}
                 onChange={(e) => setSelectedTask(e.target.value)}
-                className="flex-1 min-w-0 border border-gray-300 rounded-lg p-3 bg-white focus:ring-2 focus:ring-blue-100 outline-none transition"
+                className="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-slate-50 p-3.5 text-sm text-slate-700 outline-none transition focus:border-[var(--djkn-gold)] focus:bg-white focus:ring-4 focus:ring-[var(--djkn-gold)]/15"
               >
                 <option value="">-- Pilih tugas rutin --</option>
                 {standardTasks.map((t, i) => <option key={i}>{t}</option>)}
               </select>
-              <button type="button" onClick={addTask} className="flex-shrink-0 w-12 h-12 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg transition shadow-md flex items-center justify-center min-w-[50px]">
+              <button type="button" onClick={addTask} className="flex h-12 w-full items-center justify-center rounded-2xl bg-[var(--djkn-blue)] px-4 text-white shadow-[0_14px_28px_rgba(0,95,172,0.18)] transition hover:bg-[#004d8a] sm:w-14">
                 <Plus size={20} />
               </button>
             </div>
@@ -354,56 +366,54 @@ export default function LogbookPage() {
                 value={otherTask}
                 onChange={(e) => setOtherTask(e.target.value)}
                 placeholder="Tulis tugas lainnya secara manual..."
-                className="w-full border border-gray-300 p-3 rounded-lg focus:ring-2 focus:ring-blue-100 outline-none animate-in fade-in"
+                className="w-full rounded-2xl border border-slate-200 bg-slate-50 p-3.5 text-sm text-slate-700 outline-none transition focus:border-[var(--djkn-gold)] focus:bg-white focus:ring-4 focus:ring-[var(--djkn-gold)]/15"
               />
             )}
 
-            {/* Task List Visualization */}
             {tasks.length > 0 ? (
               <div className="mt-4 space-y-2">
                 {tasks.map((task, i) => (
-                  <div key={i} className="flex justify-between items-center bg-blue-50 p-3 rounded-lg border border-blue-100 animate-in fade-in slide-in-from-top-2">
-                    <span className="text-sm font-medium text-blue-900 flex items-center gap-2">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div> {task}
+                  <div key={i} className="flex items-center justify-between gap-3 rounded-2xl border border-[var(--djkn-blue)]/10 bg-[var(--djkn-blue)]/5 p-3.5">
+                    <span className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+                      <span className="h-2.5 w-2.5 rounded-full bg-[var(--djkn-gold)]" />
+                      {task}
                     </span>
-                    <button type="button" onClick={() => removeTask(i)} className="text-red-400 hover:text-red-600 transition p-1">
-                      <Trash2 size={18} />
+                    <button type="button" onClick={() => removeTask(i)} className="rounded-full p-1.5 text-red-500 transition hover:bg-red-50 hover:text-red-600">
+                      <Trash2 size={17} />
                     </button>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 border-2 border-dashed border-gray-200 rounded-lg text-gray-400 text-sm bg-gray-50">
-                Belum ada tugas yang ditambahkan.<br/>Silakan pilih tugas di atas.
+              <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 py-8 text-center text-sm text-slate-500">
+                Belum ada tugas yang ditambahkan.<br />Silakan pilih tugas di atas.
               </div>
             )}
           </div>
 
-          {/* Description */}
           <div>
-            <label className="text-sm font-bold text-gray-700 mb-2 block">Keterangan Tambahan / Kendala</label>
+            <label className="mb-2 block text-sm font-black uppercase tracking-[0.15em] text-slate-600">Keterangan Tambahan / Kendala</label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ description: e.target.value })}
               rows={4}
-              className="w-full border border-gray-300 rounded-lg p-3 resize-none focus:ring-2 focus:ring-blue-100 outline-none transition"
+              className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50 p-3.5 text-sm text-slate-700 outline-none transition focus:border-[var(--djkn-gold)] focus:bg-white focus:ring-4 focus:ring-[var(--djkn-gold)]/15"
               placeholder="Tulis detail pekerjaan atau kendala yang dihadapi (Opsional)..."
             />
           </div>
 
-          {/* Submit Button */}
           <div className="pt-2">
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full flex justify-center items-center gap-2 text-white py-4 rounded-xl font-bold shadow-lg transition transform active:scale-95 ${
-                isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-900 hover:bg-blue-800 shadow-blue-500/30'
+              className={`flex w-full items-center justify-center gap-2 rounded-[22px] py-4 text-base font-black text-white shadow-[0_18px_35px_rgba(0,95,172,0.18)] transition ${
+                isSubmitting ? 'cursor-not-allowed bg-slate-300 text-slate-500 shadow-none' : 'bg-[var(--djkn-gold)] text-slate-900 hover:bg-[#f4bb2d]'
               }`}
             >
-              {isSubmitting ? <RefreshCw size={20} className="animate-spin" /> : <Send size={20} />}
+              {isSubmitting ? <RefreshCw size={18} className="animate-spin" /> : <Send size={18} />}
               {isSubmitting ? 'Menyimpan...' : statusLogbook === 'COMPLETED' ? 'Update & Simpan' : 'Submit Logbook (Selesai)'}
             </button>
-            <p className="text-center text-xs text-gray-500 mt-3">
+            <p className="mt-3 text-center text-xs text-slate-500">
               *Setelah logbook selesai (COMPLETED), tombol Absen Pulang di dashboard akan aktif.
             </p>
           </div>

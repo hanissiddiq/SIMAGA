@@ -418,7 +418,7 @@ export default function CheckInPage() {
 
   // Render Teks
   ctx.font = 'bold 30px Arial';
-  ctx.fillText('SMART PPNPN', 20, TARGET_HEIGHT - 160);
+  ctx.fillText('SIMAGA - Absen Masuk', 20, TARGET_HEIGHT - 160);
 
   ctx.font = '24px Arial';
   ctx.fillText(`${dateText} ${timeText} WIB`, 20, TARGET_HEIGHT - 120);
@@ -769,214 +769,141 @@ export default function CheckInPage() {
   // =========================
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-
-      {/* HEADER */}
-      <header className="bg-blue-900 text-white p-4 shadow-lg flex items-center">
-        <button
-          onClick={() =>
-            router.back()
-          }
-          className="p-1 mr-4 text-white hover:text-gray-300 transition"
-        >
-          <ArrowLeft size={24} />
-        </button>
-
-        <h1 className="text-xl font-bold">
-          Absen Masuk
-        </h1>
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(250,183,21,0.18),transparent_25%),linear-gradient(180deg,#f5f8fc_0%,#edf4fb_100%)] font-sans text-slate-800">
+      <header className="relative overflow-hidden bg-[var(--djkn-blue)] px-5 pb-20 pt-4 text-white shadow-[0_20px_45px_rgba(0,95,172,0.22)]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(250,183,21,0.35),transparent_30%)]" />
+        <div className="relative flex items-center gap-3">
+          <button
+            onClick={() => router.back()}
+            className="rounded-full border border-white/20 bg-white/10 p-2 transition hover:bg-white/20"
+          >
+            <ArrowLeft size={22} />
+          </button>
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-blue-100">Presensi</p>
+            <h1 className="text-xl font-black">Absen Masuk</h1>
+          </div>
+        </div>
       </header>
 
-      <main className="p-6">
+      <main className="relative z-10 -mt-12 space-y-5 px-4 pb-8">
+        <div className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_22px_50px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+          <div className="mb-4 flex items-center justify-between">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Waktu saat ini</p>
+            <span className="rounded-full bg-[var(--djkn-gold)]/15 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--djkn-blue)]">Shift Pagi</span>
+          </div>
 
-        {/* JAM */}
-        <div className="bg-white p-8 rounded-xl shadow-lg mb-8 text-center">
-          <Clock
-            size={48}
-            className="text-gray-700 mx-auto mb-4"
-          />
-
-          <p className="text-lg font-semibold text-gray-700">
-            Waktu Saat Ini
-          </p>
-
-          <h2 className="text-5xl font-extrabold text-gray-900 mb-1">
-            {formattedTime}
-          </h2>
-
-          <p className="text-md text-gray-500">
-            {formattedDate}
-          </p>
+          <div className="flex items-center justify-center rounded-2xl bg-[var(--djkn-gold)]/10 p-5 text-center">
+            <div>
+              <Clock size={40} className="mx-auto mb-3 text-[var(--djkn-blue)]" />
+              <h2 className="text-4xl font-black tracking-tight text-slate-900">{formattedTime}</h2>
+              <p className="mt-1 text-sm font-medium text-slate-600">{formattedDate}</p>
+            </div>
+          </div>
         </div>
 
-        {/* SHIFT */}
-        <div className="bg-white p-4 rounded-xl shadow-md border mb-4">
-          <p className="font-semibold text-gray-700">
-            Shift Aktif
-          </p>
-          <p className="mt-2 text-base font-bold text-blue-900">
-            Pagi
-          </p>
+        <div className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
+          <div className="mb-3 flex items-center justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Shift Aktif</p>
+              <p className="mt-2 text-lg font-black text-[var(--djkn-blue)]">Pagi</p>
+            </div>
+            <div className="rounded-full border border-[var(--djkn-gold)]/30 bg-[var(--djkn-gold)]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--djkn-blue)]">
+              Default
+            </div>
+          </div>
         </div>
 
-        {/* LOKASI */}
-        <div className="bg-white p-4 rounded-xl shadow-md border mb-5">
-          <p className="font-semibold text-gray-700 mb-1">
-            Status Lokasi
-          </p>
-
-          <p
-            className={`text-sm ${
-              distance &&
-              distance <=
-                OFFICE_LOCATION.radius_m
-                ? 'text-green-600'
-                : 'text-red-600'
-            }`}
-          >
+        <div className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-slate-500">Status Lokasi</p>
+          <p className={`text-sm font-semibold ${distance && distance <= OFFICE_LOCATION.radius_m ? 'text-emerald-600' : 'text-red-600'}`}>
             {locationStatus}
           </p>
 
-          {distance !==
-            null && (
-            <p className="mt-1 text-sm text-gray-600">
-              Jarak dari kantor:{' '}
-              <b>
-                {distance.toFixed(
-                  1
-                )}{' '}
-                meter
-              </b>
+          {distance !== null && (
+            <p className="mt-2 text-sm text-slate-600">
+              Jarak dari kantor: <span className="font-bold text-slate-800">{distance.toFixed(1)} meter</span>
             </p>
           )}
 
-          <p className="mt-2 text-sm text-gray-600">
-            <b>Alamat:</b>
+          <p className="mt-3 rounded-2xl bg-slate-50 p-3 text-sm leading-6 text-slate-600">
+            <span className="font-bold text-slate-800">Alamat:</span>
             <br />
             {address}
           </p>
 
           <button
-            onClick={
-              fetchLocation
-            }
-            className="mt-3 bg-blue-900 text-white text-sm py-2 px-3 rounded-lg"
+            onClick={fetchLocation}
+            className="mt-4 w-full rounded-xl bg-[var(--djkn-blue)] px-4 py-2.5 text-sm font-bold text-white shadow-[0_10px_25px_rgba(0,95,172,0.18)] transition hover:bg-[#004d8a]"
           >
-            Ambil Ulang
-            Lokasi
+            Ambil Ulang Lokasi
           </button>
         </div>
 
-        {/* FOTO */}
-        <div className="bg-white p-4 rounded-xl shadow-md border mb-5">
-
-          <div className="flex items-center gap-2 mb-3">
-            <Camera size={20} />
-
-            <p className="font-semibold text-gray-700">
-              Foto Presensi
-            </p>
+        <div className="rounded-[28px] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
+          <div className="mb-3 flex items-center gap-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--djkn-gold)]/15 text-[var(--djkn-blue)]">
+              <Camera size={18} />
+            </div>
+            <p className="text-base font-black text-slate-800">Foto Presensi</p>
           </div>
 
-          {/* TOMBOL BUKA KAMERA */}
-          {!photo &&
-            !cameraOpen && (
-              <button
-                onClick={() => {
-                  setCameraOpen(
-                    true
-                  );
+          {!photo && !cameraOpen && (
+            <button
+              onClick={() => {
+                setCameraOpen(true);
+                setTimeout(() => openCamera(), 300);
+              }}
+              className="w-full rounded-xl bg-[var(--djkn-green)] px-4 py-3 text-sm font-bold text-white shadow-[0_12px_25px_rgba(2,165,79,0.18)] transition hover:bg-[#029249]"
+            >
+              Buka Kamera
+            </button>
+          )}
 
-                  setTimeout(
-                    () => {
-                      openCamera();
-                    },
-                    300
-                  );
-                }}
-                className="bg-green-600 text-white px-4 py-2 rounded-lg"
-              >
-                Buka Kamera
-              </button>
-            )}
-
-          {/* VIDEO */}
           {cameraOpen && (
             <div className="space-y-3">
-
               <video
                 ref={videoRef}
                 autoPlay
                 playsInline
                 muted
-                className="w-full rounded-lg border bg-black"
+                className="w-full rounded-2xl border border-slate-200 bg-black"
               />
-
               <button
-                onClick={
-                  capturePhoto
-                }
-                className="bg-blue-900 text-white px-4 py-2 rounded-lg"
+                onClick={capturePhoto}
+                className="w-full rounded-xl bg-[var(--djkn-blue)] px-4 py-3 text-sm font-bold text-white shadow-[0_12px_25px_rgba(0,95,172,0.2)] transition hover:bg-[#004d8a]"
               >
                 Ambil Foto
               </button>
             </div>
           )}
 
-          {/* PREVIEW FOTO */}
           {photo && (
             <div className="space-y-3">
-
-              <img
-                src={photo}
-                alt="Preview"
-                className="w-full rounded-lg border"
-              />
-
+              <img src={photo} alt="Preview" className="w-full rounded-2xl border border-slate-200" />
               <button
                 onClick={() => {
-                  setPhoto(
-                    null
-                  );
-
-                  setCameraOpen(
-                    true
-                  );
-
-                  setTimeout(
-                    () => {
-                      openCamera();
-                    },
-                    300
-                  );
+                  setPhoto(null);
+                  setCameraOpen(true);
+                  setTimeout(() => openCamera(), 300);
                 }}
-                className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
+                className="w-full rounded-xl bg-[var(--djkn-gold)] px-4 py-3 text-sm font-bold text-slate-900 shadow-[0_12px_25px_rgba(250,183,21,0.2)] transition hover:bg-[#f4bb2d]"
               >
                 Ambil Ulang
               </button>
             </div>
           )}
 
-          <canvas
-            ref={canvasRef}
-            className="hidden"
-          />
+          <canvas ref={canvasRef} className="hidden" />
         </div>
 
-        {/* SUBMIT */}
         <button
-          onClick={
-            handleCheckIn
-          }
-          disabled={
-            isSubmitting ||
-            !canCheckIn
-          }
-          className={`w-full py-4 text-white font-extrabold rounded-xl transition duration-300 shadow-xl ${
-            isSubmitting ||
-            !canCheckIn
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-blue-900 hover:bg-blue-800'
+          onClick={handleCheckIn}
+          disabled={isSubmitting || !canCheckIn}
+          className={`w-full rounded-[22px] py-4 text-base font-black transition duration-300 ${
+            isSubmitting || !canCheckIn
+              ? 'cursor-not-allowed bg-slate-300 text-slate-500'
+              : 'bg-[var(--djkn-gold)] text-slate-900 shadow-[0_18px_35px_rgba(250,183,21,0.28)] hover:bg-[#f4bb2d]'
           }`}
         >
           {isSubmitting

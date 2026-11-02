@@ -16,15 +16,15 @@ import { ArrowLeft, Calendar, Filter, Search, BookOpen, X } from 'lucide-react'
 const StatusBadge = ({ status }: { status: string }) => {
   const styles =
     status === 'Tepat Waktu'
-      ? 'bg-green-100 text-green-800'
+      ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
       : status === 'Terlambat'
-      ? 'bg-yellow-100 text-yellow-800'
+      ? 'bg-[var(--djkn-gold)]/15 text-amber-800 border border-[var(--djkn-gold)]/30'
       : status === 'Pulang Sebelum Waktu'
-      ? 'bg-red-100 text-red-800'
-      : 'bg-gray-100 text-gray-800'
+      ? 'bg-red-100 text-red-800 border border-red-200'
+      : 'bg-slate-100 text-slate-700 border border-slate-200'
 
   return (
-    <div className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-md ${styles}`}>
+    <div className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] ${styles}`}>
       {status}
     </div>
   )
@@ -209,140 +209,185 @@ export default function RekapAbsensiPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 font-sans pb-10">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(250,183,21,0.18),transparent_28%),linear-gradient(180deg,#f5f8fc_0%,#edf4fb_100%)] pb-10 font-sans text-slate-800">
       <Toaster position="top-center" />
 
-      <header className="bg-blue-800 text-white p-4 shadow-md flex items-center sticky top-0 z-10">
-        {mounted && <button onClick={() => router.back()} className="p-2 mr-2 rounded-full hover:bg-blue-700 transition">
-          <ArrowLeft className="w-6 h-6" />
-        </button>}
-        <h1 className="text-xl font-bold">Rekap Absensi Saya</h1>
+      <header className="sticky top-0 z-10 flex items-center gap-3 border-b border-white/20 bg-[var(--djkn-blue)] px-4 py-4 text-white shadow-[0_18px_35px_rgba(0,95,172,0.18)] sm:px-6">
+        {mounted && (
+          <button onClick={() => router.back()} className="rounded-full border border-white/20 bg-white/10 p-2 transition hover:bg-white/15">
+            <ArrowLeft className="h-5 w-5" />
+          </button>
+        )}
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">Rekap</p>
+          <h1 className="text-lg font-black sm:text-xl">Rekap Absensi Saya</h1>
+        </div>
       </header>
 
-      <main className="p-4 max-w-lg mx-auto">
-        {/* Statistik Kehadiran */}
-        <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 mb-6">
-          <h2 className="text-sm font-bold text-gray-700 mb-4 border-b pb-2">RINGKASAN KEHADIRAN</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
-                <span className="text-xs text-blue-600 font-semibold block">Total Hari</span>
-                <span className="text-2xl font-bold text-blue-900">{stats.totalHari}</span>
+      <main className="mx-auto max-w-6xl p-4 sm:p-6">
+        <section className="mb-6 overflow-hidden rounded-[30px] border border-white/70 bg-white/90 p-5 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Ringkasan Kehadiran</p>
+              <h2 className="mt-2 text-2xl font-black text-slate-900">Performa Absensi</h2>
             </div>
-            <div className="p-3 bg-green-50 rounded-lg border border-green-100">
-                <span className="text-xs text-green-600 font-semibold block">Tepat Waktu</span>
-                <span className="text-2xl font-bold text-green-900">{stats.TepatWaktu}</span>
+            <div className="rounded-2xl border border-[var(--djkn-gold)]/30 bg-[var(--djkn-gold)]/10 px-3 py-2 text-sm font-semibold text-slate-700">
+              {filterType === 'monthly' ? `${new Date(year, month).toLocaleString('id-ID', { month: 'long', year: 'numeric' })}` : 'Filter Tanggal Kustom'}
             </div>
-            <div className="p-3 bg-yellow-50 rounded-lg border border-yellow-100">
-                <span className="text-xs text-yellow-600 font-semibold block">Terlambat</span>
-                <span className="text-2xl font-bold text-yellow-900">{stats.Terlambat}</span>
+          </div>
+
+          <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="rounded-2xl border border-[var(--djkn-blue)]/15 bg-[var(--djkn-blue)]/5 p-4">
+              <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--djkn-blue)]">Total Hari</span>
+              <span className="mt-3 block text-3xl font-black text-[var(--djkn-blue)]">{stats.totalHari}</span>
             </div>
-            <div className="p-3 bg-red-50 rounded-lg border border-red-100">
-                <span className="text-xs text-red-600 font-semibold block">PSW</span>
-                <span className="text-2xl font-bold text-red-900">{stats.PulangDini}</span>
+            <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
+              <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-700">Tepat Waktu</span>
+              <span className="mt-3 block text-3xl font-black text-emerald-800">{stats.TepatWaktu}</span>
+            </div>
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
+              <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-amber-700">Terlambat</span>
+              <span className="mt-3 block text-3xl font-black text-amber-800">{stats.Terlambat}</span>
+            </div>
+            <div className="rounded-2xl border border-red-200 bg-red-50 p-4">
+              <span className="block text-[10px] font-bold uppercase tracking-[0.18em] text-red-700">Pulang Dini</span>
+              <span className="mt-3 block text-3xl font-black text-red-800">{stats.PulangDini}</span>
             </div>
           </div>
         </section>
 
-        {/* Riwayat Absensi */}
-        <section>
-          {loading ? <p>Memuat...</p> :
+        <section className="mb-6 rounded-[28px] border border-white/70 bg-white/90 p-4 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur-sm sm:p-5">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-2 rounded-full bg-slate-100 p-1">
+              <button
+                onClick={() => setFilterType('monthly')}
+                className={`rounded-full px-4 py-2 text-sm font-bold transition ${filterType === 'monthly' ? 'bg-[var(--djkn-blue)] text-white shadow' : 'text-slate-600'}`}
+              >
+                Bulanan
+              </button>
+              <button
+                onClick={() => setFilterType('custom')}
+                className={`rounded-full px-4 py-2 text-sm font-bold transition ${filterType === 'custom' ? 'bg-[var(--djkn-blue)] text-white shadow' : 'text-slate-600'}`}
+              >
+                Custom
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2 text-slate-500">
+              <Calendar size={16} />
+              <span className="text-sm font-semibold">Filter Data Absensi</span>
+            </div>
+          </div>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {filterType === 'monthly' ? (
+              <>
+                <select value={month} onChange={(e) => setMonth(Number(e.target.value))} className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm outline-none ring-0 transition focus:border-[var(--djkn-gold)] focus:bg-white">
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <option key={i} value={i}>{new Date(2024, i).toLocaleString('id-ID', { month: 'long' })}</option>
+                  ))}
+                </select>
+                <select value={year} onChange={(e) => setYear(Number(e.target.value))} className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm outline-none transition focus:border-[var(--djkn-gold)] focus:bg-white">
+                  {[new Date().getFullYear() - 1, new Date().getFullYear(), new Date().getFullYear() + 1].map((y) => (
+                    <option key={y} value={y}>{y}</option>
+                  ))}
+                </select>
+              </>
+            ) : (
+              <>
+                <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm outline-none transition focus:border-[var(--djkn-gold)] focus:bg-white" />
+                <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm outline-none transition focus:border-[var(--djkn-gold)] focus:bg-white" />
+              </>
+            )}
+          </div>
+        </section>
+
+        <section className="space-y-4">
+          {loading ? (
+            <div className="rounded-[28px] border border-white/70 bg-white/90 p-8 text-center text-slate-500 shadow-[0_18px_45px_rgba(15,23,42,0.08)]">
+              Memuat riwayat absensi...
+            </div>
+          ) : attendances.length === 0 ? (
+            <div className="rounded-[28px] border border-dashed border-slate-300 bg-white/80 p-10 text-center text-slate-500 shadow-sm">
+              Belum ada data absensi pada rentang tanggal yang dipilih.
+            </div>
+          ) : (
             attendances.map(att => (
-              <div key={`${att.attendance_date}-${att.shift}`} className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-3">
-                <div className="flex justify-between items-start mb-3 border-b border-gray-100 pb-2">
+              <div key={`${att.attendance_date}-${att.shift}`} className="overflow-hidden rounded-[28px] border border-white/70 bg-white/90 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+                <div className="flex flex-col gap-3 border-b border-slate-200 bg-slate-50/80 p-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <p className="font-bold text-gray-800">{formatDateUI(att.attendance_date)}</p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded inline-block uppercase font-semibold">
+                    <p className="text-lg font-black text-slate-900">{formatDateUI(att.attendance_date)}</p>
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      <span className="rounded-full bg-slate-200 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-700">
                         Shift: {att.shift}
                       </span>
-
                       <button
                         onClick={() => handleViewLogbook(att.id)}
-                        className="flex items-center gap-1 text-xs bg-blue-100 hover:bg-blue-200 text-blue-700 px-2 py-1 rounded transition"
+                        className="inline-flex items-center gap-1 rounded-full bg-[var(--djkn-blue)]/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--djkn-blue)] transition hover:bg-[var(--djkn-blue)]/15"
                       >
-                        <BookOpen size={14} />
-                        Logbook
+                        <BookOpen size={12} /> Logbook
                       </button>
                     </div>
                   </div>
                   <StatusBadge status={att.computedStatus} />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  {/* Masuk */}
-                  <div className="bg-blue-50/50 p-2 rounded-lg">
-                    <p className="text-[10px] font-bold text-blue-600 uppercase mb-1">Absen Masuk</p>
-                    <p className="font-mono font-bold text-gray-800 text-lg">{att.check_in ? formatTime(att.check_in) : '--:--'}</p>
-                    <div className="mt-2 text-[10px] text-gray-500 space-y-0.5">
-                      <p className="line-clamp-1">{att.check_in_location || '-'}</p>
-                      <p className="font-mono text-gray-400">{formatCoord(att.check_in_latitude, att.check_in_longitude)}</p>
-                      <p className="font-semibold text-blue-700">Jarak: {formatDistance(att.check_in_distance_m)}</p>
+                <div className="grid gap-4 p-4 md:grid-cols-2">
+                  <div className="rounded-2xl border border-[var(--djkn-blue)]/15 bg-[var(--djkn-blue)]/5 p-3.5">
+                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--djkn-blue)]">Absen Masuk</p>
+                    <p className="mt-2 font-mono text-2xl font-black text-slate-900">{att.check_in ? formatTime(att.check_in) : '--:--'}</p>
+                    <div className="mt-3 space-y-1 text-[11px] text-slate-600">
+                      <p>{att.check_in_location || '-'}</p>
+                      <p className="font-mono text-slate-500">{formatCoord(att.check_in_latitude, att.check_in_longitude)}</p>
+                      <p className="font-bold text-[var(--djkn-blue)]">Jarak: {formatDistance(att.check_in_distance_m)}</p>
                     </div>
                   </div>
 
-                  {/* Pulang */}
-                  <div className="bg-orange-50/50 p-2 rounded-lg">
-                    <p className="text-[10px] font-bold text-orange-600 uppercase mb-1">Absen Pulang</p>
-                    <p className="font-mono font-bold text-gray-800 text-lg">{att.check_out ? formatTime(att.check_out) : '--:--'}</p>
-                    <div className="mt-2 text-[10px] text-gray-500 space-y-0.5">
-                      <p className="line-clamp-1">{att.check_out_location || '-'}</p>
-                      <p className="font-mono text-gray-400">{formatCoord(att.check_out_latitude, att.check_out_longitude)}</p>
-                      <p className="font-semibold text-orange-700">Jarak: {formatDistance(att.check_out_distance_m)}</p>
+                  <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3.5">
+                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">Absen Pulang</p>
+                    <p className="mt-2 font-mono text-2xl font-black text-slate-900">{att.check_out ? formatTime(att.check_out) : '--:--'}</p>
+                    <div className="mt-3 space-y-1 text-[11px] text-slate-600">
+                      <p>{att.check_out_location || '-'}</p>
+                      <p className="font-mono text-slate-500">{formatCoord(att.check_out_latitude, att.check_out_longitude)}</p>
+                      <p className="font-bold text-amber-700">Jarak: {formatDistance(att.check_out_distance_m)}</p>
                     </div>
                   </div>
                 </div>
               </div>
             ))
-          }
+          )}
         </section>
       </main>
 
       {showLogbookModal && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[80vh] overflow-hidden">
-
-            <div className="flex items-center justify-between p-4 border-b">
-              <h2 className="font-bold text-lg text-gray-800">
-                Detail Logbook
-              </h2>
-
-              <button
-                onClick={() => setShowLogbookModal(false)}
-                className="text-gray-500 hover:text-red-500"
-              >
-                <X size={22} />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="max-h-[80vh] w-full max-w-lg overflow-hidden rounded-[28px] border border-white/70 bg-white shadow-[0_25px_60px_rgba(15,23,42,0.18)]">
+            <div className="flex items-center justify-between border-b border-slate-200 p-4">
+              <h2 className="text-lg font-black text-slate-900">Detail Logbook</h2>
+              <button onClick={() => setShowLogbookModal(false)} className="rounded-full p-2 text-slate-500 transition hover:bg-slate-100 hover:text-red-500">
+                <X size={20} />
               </button>
             </div>
 
-            <div className="p-4 overflow-y-auto max-h-[65vh]">
-
+            <div className="max-h-[65vh] overflow-y-auto p-4">
               {loadingLogbook ? (
-                <p className="text-center text-gray-500">
-                  Memuat logbook...
-                </p>
+                <p className="py-10 text-center text-slate-500">Memuat logbook...</p>
               ) : selectedLogbook.length === 0 ? (
-                <div className="text-center text-gray-500 py-10">
-                  Tidak ada logbook pada tanggal ini
-                </div>
+                <div className="py-10 text-center text-slate-500">Tidak ada logbook pada tanggal ini</div>
               ) : (
                 <div className="space-y-3">
                   {selectedLogbook.map((log, index) => (
-                    <div
-                      key={index}
-                      className="border border-gray-200 rounded-xl p-4"
-                    >
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-semibold text-gray-800">
-                          {log.judul_kegiatan || 'Kegiatan'}
-                        </h3>
-
-                        <span className="text-xs text-gray-400">
-                          verifikasi: {log.activity_name === 'random' ? 'Random' : 'System'}
+                    <div key={index} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                      <div className="mb-2 flex items-start justify-between gap-2">
+                        <h3 className="font-black text-slate-800">{log.judul_kegiatan || 'Kegiatan'}</h3>
+                        <span className="rounded-full bg-white px-2 py-1 text-[9px] font-bold uppercase tracking-[0.14em] text-slate-500">
+                          {log.activity_name === 'random' ? 'Random' : 'System'}
                         </span>
                       </div>
 
-                      <p className="text-sm text-gray-600 whitespace-pre-line">
-                        {log.uraian_kerja || '-'} <br/>
+                      <p className="whitespace-pre-line text-sm leading-6 text-slate-600">
+                        {log.uraian_kerja || '-'}
+                        <br />
                         {log.description || '-'}
                       </p>
                     </div>

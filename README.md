@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # PPNPNBERJAYA
 
 > **Platform Manajemen Kehadiran Modern**  
@@ -415,3 +416,7 @@ Konfigurasi ini sudah cukup untuk kebutuhan pengembangan maupun penggunaan skala
 Terima kasih kepada seluruh kontributor dan pihak yang telah mendukung pengembangan **PPNPNBERJAYA**.
 
 Semoga aplikasi ini dapat membantu proses pengelolaan kehadiran pegawai menjadi lebih **cepat**, **efisien**, **aman**, dan **modern**.
+=======
+# SIMAGA
+SISTEM INFORMASI MAHASISWA MAGANG KPKNL LHOKSEUMAWE
+>>>>>>> e79b94551c5ab6abd2e02cd8aca20773b86f7140

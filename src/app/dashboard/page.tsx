@@ -147,12 +147,12 @@ export default function DashboardPage() {
   };
 
   const StatusBadge = ({ status }: { status: string }) => {
-    let bgColor = 'bg-red-600', text = 'Belum Absen', ringColor = 'ring-red-400';
-    if (status === 'Masuk') { bgColor = 'bg-green-600'; text = 'Sudah Absen Masuk'; ringColor = 'ring-green-400'; }
-    else if (status === 'Pulang') { bgColor = 'bg-blue-600'; text = 'Selesai Hari Ini'; ringColor = 'ring-blue-400'; }
-    else if (status === 'Terlambat') { bgColor = 'bg-yellow-600'; text = 'Absen Terlambat'; ringColor = 'ring-yellow-400'; }
+    let bgColor = 'bg-red-100 text-red-700 border-red-200', text = 'Belum Absen';
+    if (status === 'Masuk') { bgColor = 'bg-emerald-100 text-emerald-700 border-emerald-200'; text = 'Sudah Absen Masuk'; }
+    else if (status === 'Pulang') { bgColor = 'bg-[var(--djkn-blue)]/10 text-[var(--djkn-blue)] border-[var(--djkn-blue)]/20'; text = 'Selesai Hari Ini'; }
+    else if (status === 'Terlambat') { bgColor = 'bg-[var(--djkn-gold)]/20 text-amber-800 border-[var(--djkn-gold)]/40'; text = 'Absen Terlambat'; }
 
-    return <div className={`px-4 py-2 text-white rounded-full font-semibold text-sm shadow-md transition duration-300 ${bgColor} ring-2 ${ringColor} ring-opacity-50`}>{text}</div>;
+    return <div className={`inline-flex items-center rounded-full border px-4 py-2 text-sm font-bold shadow-sm ${bgColor}`}>{text}</div>;
   };
 
   // LOGIC TOMBOL
@@ -164,19 +164,19 @@ export default function DashboardPage() {
 
   type FeatureCardProps = { icon: React.ComponentType<{ size?: number }>, title: string, description: string, href?: string, onClick?: () => void };
   const FeatureCard = ({ icon: Icon, title, description, href, onClick }: FeatureCardProps) => {
-    const common = "flex items-center p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300 border border-gray-100 transform hover:scale-[1.01]";
+    const common = "group flex items-center rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-[0_14px_30px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--djkn-gold)] hover:shadow-[0_18px_35px_rgba(250,183,21,0.18)]";
     if (onClick) {
       return (
-        <button onClick={onClick} className={common}>
-          <div className="p-3 bg-blue-100 text-blue-800 rounded-lg mr-4 shadow-inner"><Icon size={24} /></div>
-          <div><h3 className="font-bold text-lg text-gray-800">{title}</h3><p className="text-sm text-gray-500">{description}</p></div>
+        <button onClick={onClick} className={`${common} w-full text-left`}>
+          <div className="mr-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--djkn-gold)]/15 text-[var(--djkn-blue)] shadow-inner"><Icon size={22} /></div>
+          <div><h3 className="text-base font-bold text-slate-800">{title}</h3><p className="text-sm text-slate-500">{description}</p></div>
         </button>
       );
     }
     return (
       <a href={href || '#'} className={common}>
-        <div className="p-3 bg-blue-100 text-blue-800 rounded-lg mr-4 shadow-inner"><Icon size={24} /></div>
-        <div><h3 className="font-bold text-lg text-gray-800">{title}</h3><p className="text-sm text-gray-500">{description}</p></div>
+        <div className="mr-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--djkn-gold)]/15 text-[var(--djkn-blue)] shadow-inner"><Icon size={22} /></div>
+        <div><h3 className="text-base font-bold text-slate-800">{title}</h3><p className="text-sm text-slate-500">{description}</p></div>
       </a>
     );
   };
@@ -201,61 +201,66 @@ const handleSubmit = async () => {
 };
 
   if (isLoading || isLoggingOut) return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="flex flex-col items-center">
-        <RefreshCw className="h-8 w-8 animate-spin text-blue-700" />
-        <p className="mt-4 text-gray-600 font-semibold">{isLoggingOut ? "Sampai Jumpa..." : "Memuat Dashboard..."}</p>
+    <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(250,183,21,0.18),transparent_30%),linear-gradient(180deg,#f4f7fb_0%,#edf4fc_100%)]">
+      <div className="flex flex-col items-center rounded-3xl border border-white/80 bg-white/80 px-8 py-6 shadow-[0_20px_50px_rgba(0,95,172,0.12)] backdrop-blur-sm">
+        <RefreshCw className="h-8 w-8 animate-spin text-[var(--djkn-blue)]" />
+        <p className="mt-4 text-base font-bold text-slate-700">{isLoggingOut ? "Sampai Jumpa..." : "Memuat Dashboard..."}</p>
       </div>
     </div>
   );
 
- 
-
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-      <header className="bg-blue-900 text-white p-6 pb-20 shadow-xl rounded-b-2xl">
-        <div className="flex justify-between items-start">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(250,183,21,0.18),transparent_28%),linear-gradient(180deg,#f4f7fb_0%,#edf4fc_100%)] font-sans text-slate-800">
+      <header className="relative overflow-hidden rounded-b-[32px] bg-[var(--djkn-blue)] p-6 pb-20 text-white shadow-[0_18px_45px_rgba(0,95,172,0.25)]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(250,183,21,0.35),transparent_28%)]" />
+        <div className="relative flex items-start justify-between gap-4">
           <div className="flex items-center space-x-3">
-            <div className="p-2 rounded-full bg-white"><User size={24} className="text-blue-900" /></div>
-            <div><h1 className="text-xl font-extrabold">{userData.fullName}</h1><p className="text-sm opacity-80">{userData.email}</p></div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--djkn-gold)] text-[var(--djkn-blue)] shadow-lg"><User size={24} /></div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-100">Selamat datang</p>
+              <h1 className="mt-1 text-xl font-extrabold">{userData.fullName}</h1>
+              <p className="text-sm text-blue-100">{userData.email}</p>
+            </div>
           </div>
-          <button onClick={handleLogout} className="text-white hover:text-red-300 transition duration-200 p-2 rounded-full" aria-label="Logout"><LogOut size={24} /></button>
+          <button onClick={handleLogout} className="rounded-full border border-white/20 bg-white/10 p-2 text-white transition duration-200 hover:bg-white/20" aria-label="Logout"><LogOut size={22} /></button>
         </div>
       </header>
 
-      <main className="px-5 -mt-10 pb-10">
-        {/* Status Absensi */}
-        <div className="bg-white p-5 rounded-xl shadow-2xl mb-6 border-b-4 border-blue-500">
-          <h2 className="text-sm font-medium text-gray-500 mb-3 uppercase tracking-wider">
-            Status Aktivitas {currentShift ? `(Shift ${currentShift.toUpperCase()})` : ''}
-          </h2>
+      <main className="relative z-10 -mt-10 px-5 pb-10">
+        <div className="mb-6 rounded-[28px] border border-white/70 bg-white/90 p-5 shadow-[0_18px_40px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <h2 className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
+              Status Aktivitas {currentShift ? `(Shift ${currentShift.toUpperCase()})` : ''}
+            </h2>
+            <span className="rounded-full bg-[var(--djkn-gold)]/15 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--djkn-blue)]">
+              Real-time
+            </span>
+          </div>
           <div className="flex items-center justify-between"><StatusBadge status={absensiStatus} /></div>
         </div>
 
-        {/* Tombol Absen */}
-        <div className="grid grid-cols-2 gap-4 mb-8">
+        <div className="mb-8 grid grid-cols-2 gap-4">
           <button 
             onClick={handleAbsenMasuk} 
-            className={`flex items-center justify-center space-x-2 py-3 rounded-xl shadow-lg transition duration-300 ${isMasukDisabled ? 'bg-gray-400 cursor-not-allowed shadow-none' : 'bg-blue-800 text-white hover:bg-blue-700'}`}
+            className={`flex items-center justify-center space-x-2 rounded-2xl py-3.5 font-bold shadow-[0_12px_24px_rgba(0,95,172,0.16)] transition duration-300 ${isMasukDisabled ? 'cursor-not-allowed bg-slate-300 text-slate-500 shadow-none' : 'bg-[var(--djkn-blue)] text-white hover:bg-[#004d8a]'}`}
             disabled={isMasukDisabled}
           >
-            <ArrowRight size={20} /><span className="font-bold">Absen Masuk</span>
+            <ArrowRight size={20} /><span>Absen Masuk</span>
           </button>
 
           <button 
             onClick={handleAbsenPulang} 
-            className={`flex items-center justify-center space-x-2 py-3 rounded-xl shadow-lg transition duration-300 ${isPulangDisabled ? 'bg-gray-400 text-gray-200 shadow-none cursor-not-allowed' : 'bg-green-600 text-white hover:bg-green-700'}`}
+            className={`flex items-center justify-center space-x-2 rounded-2xl py-3.5 font-bold shadow-[0_12px_24px_rgba(2,165,79,0.16)] transition duration-300 ${isPulangDisabled ? 'cursor-not-allowed bg-slate-300 text-slate-500 shadow-none' : 'bg-[var(--djkn-green)] text-white hover:bg-[#029249]'}`}
             disabled={isPulangDisabled}
           >
-            <ArrowLeft size={20} /><span className="font-bold">Absen Pulang</span>
+            <ArrowLeft size={20} /><span>Absen Pulang</span>
           </button>
         </div>
 
-        {/* Alert Logbook */}
         {(absensiStatus === 'Masuk' || absensiStatus === 'Terlambat') && (
-          <div className={`p-4 mb-8 rounded-xl shadow-sm border ${hasCompletedLogbook ? 'bg-green-50 border-green-300 text-green-800' : 'bg-yellow-50 border-yellow-300 text-yellow-800'}`}>
-            <p className="font-semibold text-center flex items-center justify-center text-sm">
-              <AlertTriangle size={20} className={`mr-2 ${hasCompletedLogbook ? 'text-green-600' : ''}`} />
+          <div className={`mb-8 rounded-2xl border p-4 shadow-sm ${hasCompletedLogbook ? 'border-emerald-200 bg-emerald-50 text-emerald-800' : 'border-[var(--djkn-gold)]/40 bg-[var(--djkn-gold)]/10 text-amber-800'}`}>
+            <p className="flex items-center justify-center text-center text-sm font-semibold">
+              <AlertTriangle size={18} className={`mr-2 ${hasCompletedLogbook ? 'text-emerald-600' : 'text-amber-700'}`} />
               {hasCompletedLogbook 
                 ? 'Logbook sudah diisi. Silakan Absen Pulang.' 
                 : 'Isi Logbook dulu agar tombol Pulang aktif.'}
@@ -263,8 +268,13 @@ const handleSubmit = async () => {
           </div>
         )}
 
-        {/* Menu */}
-        <h2 className="text-lg font-bold text-gray-800 mb-4">Menu Aplikasi</h2>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="text-lg font-black text-slate-800">Menu Aplikasi</h2>
+          <span className="rounded-full border border-[var(--djkn-gold)]/30 bg-[var(--djkn-gold)]/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--djkn-blue)]">
+            Fast Access
+          </span>
+        </div>
+
         <div className="space-y-4">
           <FeatureCard icon={FileText} title="Logbook" description="Catat detail aktivitas harian Anda." href="/logbook" />
           <FeatureCard icon={FileText} title="Absen Lembur" description="Catat detail aktivitas harian Anda." href="/lembur" />
@@ -280,59 +290,56 @@ const handleSubmit = async () => {
                   onClick={handleOpenModal}
                 />
         </div>
+
         {open && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg w-80">
-            
-            <h2 className="text-lg font-bold mb-4">
-              Pilih Periode
-            </h2>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
+            <div className="w-full max-w-sm rounded-[26px] bg-white p-6 shadow-[0_25px_60px_rgba(15,23,42,0.18)]">
+              <div className="mb-5 flex items-center justify-between">
+                <h2 className="text-xl font-black text-slate-800">Pilih Periode</h2>
+                <div className="h-3 w-3 rounded-full bg-[var(--djkn-gold)]" />
+              </div>
 
-            {/* Tahun */}
-            <select
-              value={year}
-              onChange={(e) => setYear(Number(e.target.value))}
-              className="w-full border p-2 mb-3"
-            >
-              {[2024, 2025, 2026].map((y) => (
-                <option key={y} value={y}>{y}</option>
-              ))}
-            </select>
-
-            {/* Bulan */}
-            <select
-              value={month}
-              onChange={(e) => setMonth(Number(e.target.value))}
-              className="w-full border p-2 mb-4"
-            >
-              {Array.from({ length: 12 }).map((_, i) => (
-                <option key={i + 1} value={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
-            </select>
-
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setOpen(false)}
-                className="px-3 py-1 border"
+              <select
+                value={year}
+                onChange={(e) => setYear(Number(e.target.value))}
+                className="mb-3 w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm font-medium text-slate-700 outline-none transition focus:border-[var(--djkn-gold)] focus:ring-4 focus:ring-[var(--djkn-gold)]/15"
               >
-                Batal
-              </button>
+                {[2024, 2025, 2026].map((y) => (
+                  <option key={y} value={y}>{y}</option>
+                ))}
+              </select>
 
-              <button
-                onClick={handleSubmit}
-                className="px-3 py-1 bg-blue-600 text-white"
+              <select
+                value={month}
+                onChange={(e) => setMonth(Number(e.target.value))}
+                className="mb-5 w-full rounded-xl border border-slate-200 bg-slate-50 p-3 text-sm font-medium text-slate-700 outline-none transition focus:border-[var(--djkn-gold)] focus:ring-4 focus:ring-[var(--djkn-gold)]/15"
               >
-                Lihat
-              </button>
+                {Array.from({ length: 12 }).map((_, i) => (
+                  <option key={i + 1} value={i + 1}>
+                    {i + 1}
+                  </option>
+                ))}
+              </select>
+
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={() => setOpen(false)}
+                  className="rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:bg-slate-100"
+                >
+                  Batal
+                </button>
+
+                <button
+                  onClick={handleSubmit}
+                  className="rounded-xl bg-[var(--djkn-gold)] px-4 py-2 text-sm font-bold text-slate-900 shadow-[0_10px_25px_rgba(250,183,21,0.35)] transition hover:bg-[#f4bb2d]"
+                >
+                  Lihat
+                </button>
+              </div>
             </div>
-
           </div>
-        </div>
-      )}
+        )}
       </main>
-       
     </div>
   );
 }

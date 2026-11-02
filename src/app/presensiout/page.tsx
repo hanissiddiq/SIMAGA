@@ -295,7 +295,7 @@ export default function PresensiOutForm() {
 
     ctx.font = 'bold 30px Arial';
     ctx.fillText(
-        'SMART PPNPN',
+        'SIMAGA - Absen Pulang',
         20,
         TARGET_HEIGHT - 160
     );
@@ -435,141 +435,158 @@ export default function PresensiOutForm() {
     const isOutOfRadius = distance !== null && distance > OFFICE_LOCATION.radius_m;
 
     return (
-        <div className="min-h-screen bg-gray-50 font-sans">
+        <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(250,183,21,0.18),transparent_28%),linear-gradient(180deg,#f5f8fc_0%,#edf4fb_100%)] px-4 py-5 font-sans text-slate-800 sm:px-6">
             <Toaster position="top-center" reverseOrder={false} />
-            <header className="bg-blue-900 text-white p-4 shadow-lg flex items-center">
-                <button onClick={() => router.back()} className="p-1 mr-4 text-white hover:text-gray-300 transition">
-                    <ArrowLeft size={24} />
-                </button>
-                <h1 className="text-xl font-bold">Absen Pulang {currentShift ? `Shift ${currentShift.toUpperCase()}` : ''}</h1>
-            </header>
 
-            <main className="p-6">
-                <div className="bg-white p-8 rounded-xl shadow-lg mb-8 text-center">
-                    <Clock size={48} className="text-gray-700 mx-auto mb-4" />
-                    <p className="text-lg font-semibold text-gray-700">Waktu Saat Ini</p>
-                    <h2 className="text-5xl font-extrabold text-gray-900 mb-1">{formattedTime}</h2>
-                    <p className="text-md text-gray-500">{formattedDate}</p>
-                </div>
+            <div className="mx-auto max-w-5xl">
+                <header className="mb-6 flex items-center gap-3 rounded-[28px] border border-white/60 bg-[var(--djkn-blue)] px-4 py-4 text-white shadow-[0_22px_45px_rgba(0,95,172,0.2)]">
+                    <button onClick={() => router.back()} className="rounded-full border border-white/20 bg-white/10 p-2 transition hover:bg-white/15">
+                        <ArrowLeft size={20} />
+                    </button>
+                    <div>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/70">Absensi</p>
+                        <h1 className="text-lg font-black sm:text-xl">Absen Pulang {currentShift ? `Shift ${currentShift.toUpperCase()}` : ''}</h1>
+                    </div>
+                </header>
 
-                {/* STATUS CARD */}
-                <div className="bg-white p-4 rounded-xl shadow-md border mb-5">
-                    {loadingData ? (
-                        <p className="text-center text-gray-500">Mengecek data absen...</p>
-                    ) : !attendanceId ? (
-                        <div className="p-3 bg-red-50 text-red-700 rounded-lg text-center font-medium">
-                            ⚠️ Tidak ditemukan data absen yang belum pulang.
-                            <br /><span className="text-xs font-normal">(Pastikan Anda sudah Absen Masuk sebelumnya)</span>
+                <main className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+                    <div className="space-y-6">
+                        <div className="rounded-[30px] border border-white/70 bg-white/90 p-6 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+                            <div className="mb-4 flex items-center justify-between gap-3">
+                                <div className="flex items-center gap-3">
+                                    <div className="rounded-2xl bg-[var(--djkn-gold)]/15 p-3 text-[var(--djkn-blue)]">
+                                        <Clock size={28} />
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">Waktu Saat Ini</p>
+                                        <p className="text-sm font-semibold text-slate-600">Tanggal dan jam</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h2 className="text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">{formattedTime}</h2>
+                            <p className="mt-2 text-base font-medium text-slate-600">{formattedDate}</p>
                         </div>
-                    ) : (
-                        <div className="space-y-2">
-                            {/* INFO SHIFT AKTIF */}
-                            <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg text-center">
-                                <p className="text-blue-800 font-semibold">Sesi Aktif: SHIFT {currentShift?.toUpperCase()}</p>
-                            </div>
 
-                            <div className={`p-3 rounded-lg flex justify-between items-center ${canCheckOut ? 'bg-green-50 text-green-800' : 'bg-yellow-50 text-yellow-800'}`}>
-                                <span>Status Logbook:</span>
-                                <span className="font-bold">{logbookStatus === 'COMPLETED' ? 'SUDAH DIISI ✅' : 'BELUM DIISI ❌'}</span>
-                            </div>
+                        <div className="rounded-[30px] border border-white/70 bg-white/90 p-5 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+                            {loadingData ? (
+                                <div className="flex items-center justify-center rounded-2xl bg-slate-50 px-4 py-6 text-sm font-medium text-slate-500">
+                                    Mengecek data absen...
+                                </div>
+                            ) : !attendanceId ? (
+                                <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-center text-sm font-semibold text-red-700">
+                                    ⚠️ Tidak ditemukan data absen yang belum pulang.
+                                    <div className="mt-1 text-xs font-normal text-red-600">(Pastikan Anda sudah Absen Masuk sebelumnya)</div>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    <div className="rounded-2xl border border-[var(--djkn-blue)]/15 bg-[var(--djkn-blue)]/5 p-3 text-center">
+                                        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--djkn-blue)]/70">Sesi Aktif</p>
+                                        <p className="mt-1 text-base font-black text-[var(--djkn-blue)]">SHIFT {currentShift?.toUpperCase()}</p>
+                                    </div>
 
-                            <div>
-                                <p className="font-semibold text-gray-700 mb-1">Status Lokasi:</p>
-                                <p className={`text-sm ${isOutOfRadius ? 'text-red-600' : 'text-green-600'}`}>{locationStatus}</p>
-                                {distance !== null && <p className="mt-1 text-sm text-gray-600">Jarak: <b>{distance.toFixed(1)} meter</b></p>}
-                                {address && address !== 'Mencari alamat...' && (
-                                    <p className="mt-1 text-sm text-gray-600">
-                                        Alamat: <b>{address}</b>
-                                    </p>
-                                )}
-                            </div>
+                                    <div className={`flex items-center justify-between rounded-2xl p-3 text-sm font-semibold ${canCheckOut ? 'bg-emerald-50 text-emerald-800' : 'bg-[var(--djkn-gold)]/15 text-amber-800'}`}>
+                                        <span>Status Logbook</span>
+                                        <span>{logbookStatus === 'COMPLETED' ? 'SUDAH DIISI ✅' : 'BELUM DIISI ❌'}</span>
+                                    </div>
 
-                            <button onClick={fetchLocation} className="mt-2 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-semibold py-2 px-3 rounded-lg">
-                                Ambil Ulang Lokasi
-                            </button>
+                                    <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                                        <p className="mb-1 text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Status Lokasi</p>
+                                        <p className={`text-sm font-semibold ${isOutOfRadius ? 'text-red-600' : 'text-emerald-600'}`}>{locationStatus}</p>
+                                        {distance !== null && (
+                                            <p className="mt-2 text-sm text-slate-600">Jarak: <span className="font-bold text-slate-800">{distance.toFixed(1)} meter</span></p>
+                                        )}
+                                        {address && address !== 'Mencari alamat...' && (
+                                            <p className="mt-2 text-sm text-slate-600">
+                                                Alamat: <span className="font-bold text-slate-800">{address}</span>
+                                            </p>
+                                        )}
+                                    </div>
+
+                                    <button onClick={fetchLocation} className="w-full rounded-2xl border border-slate-200 bg-slate-100 px-3 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-200">
+                                        Ambil Ulang Lokasi
+                                    </button>
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
+                    </div>
 
-                {/* KAMERA */}
-                <div className="bg-white p-4 rounded-xl shadow-md border mb-5">
-                    <h3 className="font-semibold mb-3 flex items-center gap-2">
-                        <Camera size={18} />
-                        Foto Selfie Absen Pulang
-                    </h3>
+                    <div className="space-y-6">
+                        <div className="rounded-[30px] border border-white/70 bg-white/90 p-5 shadow-[0_18px_45px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+                            <h3 className="mb-4 flex items-center gap-2 text-base font-black text-slate-800">
+                                <Camera size={18} className="text-[var(--djkn-blue)]" />
+                                Foto Selfie Absen Pulang
+                            </h3>
 
-                    {!cameraOpen && !photo && (
+                            {!cameraOpen && !photo && (
+                                <button
+                                    onClick={openCamera}
+                                    className="w-full rounded-2xl bg-[var(--djkn-green)] px-4 py-3 text-sm font-black text-white shadow-[0_16px_28px_rgba(2,165,79,0.24)] transition hover:bg-[#029b49]"
+                                >
+                                    Ambil Foto Selfie
+                                </button>
+                            )}
+
+                            {cameraOpen && (
+                                <div className="space-y-3">
+                                    <video
+                                        ref={videoRef}
+                                        autoPlay
+                                        playsInline
+                                        muted
+                                        className="min-h-[260px] w-full rounded-2xl border border-slate-200 bg-black object-cover"
+                                    />
+
+                                    <button
+                                        onClick={capturePhoto}
+                                        className="w-full rounded-2xl bg-[var(--djkn-blue)] px-4 py-3 text-sm font-black text-white shadow-[0_16px_28px_rgba(0,95,172,0.18)] transition hover:bg-[#004d8a]"
+                                    >
+                                        Ambil Foto
+                                    </button>
+                                </div>
+                            )}
+
+                            {photo && (
+                                <div className="space-y-3">
+                                    <img
+                                        src={photo}
+                                        alt="Preview Selfie"
+                                        className="w-full rounded-2xl border border-slate-200 object-cover"
+                                    />
+
+                                    <button
+                                        onClick={async () => {
+                                            setPhoto(null);
+                                            await openCamera();
+                                        }}
+                                        className="w-full rounded-2xl bg-[var(--djkn-gold)] px-4 py-3 text-sm font-black text-slate-900 shadow-[0_16px_28px_rgba(250,183,21,0.22)] transition hover:bg-[#f4bb2d]"
+                                    >
+                                        Ulangi Foto
+                                    </button>
+                                </div>
+                            )}
+
+                            <canvas ref={canvasRef} style={{ display: 'none' }} />
+                        </div>
+
                         <button
-                            onClick={openCamera}
-                            className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold"
+                            onClick={handleCheckOut}
+                            className={`w-full rounded-[22px] px-4 py-4 text-base font-black text-white shadow-[0_18px_35px_rgba(0,95,172,0.18)] transition ${isSubmitting ? 'cursor-not-allowed bg-slate-300 text-slate-500 shadow-none' : 'bg-[var(--djkn-gold)] text-slate-900 hover:bg-[#f4bb2d]'}`}
                         >
-                            Ambil Foto Selfie
+                            {isSubmitting ? 'Memproses...' : 'SUBMIT ABSEN PULANG'}
                         </button>
-                    )}
+                    </div>
+                </main>
 
-                    {cameraOpen && (
-                        <div className="space-y-3">
-                            <video
-                                ref={videoRef}
-                                autoPlay
-                                playsInline
-                                muted
-                                className="w-full rounded-lg border bg-black min-h-[300px]"
-                            />
-
-                            <button
-                                onClick={capturePhoto}
-                                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold"
-                            >
-                                Ambil Foto
-                            </button>
-                        </div>
-                    )}
-
-                    {photo && (
-                        <div className="space-y-3">
-                            <img
-                                src={photo}
-                                alt="Preview Selfie"
-                                className="w-full rounded-lg border"
-                            />
-
-                            <button
-                                onClick={async () => {
-                                    setPhoto(null);
-                                    await openCamera();
-                                }}
-                                className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg font-semibold"
-                            >
-                                Ulangi Foto
-                            </button>
-                        </div>
-                    )}
-
-                    <canvas
-                        ref={canvasRef}
-                        style={{ display: 'none' }}
-                    />
-                </div>
-
-                <button
-                    onClick={handleCheckOut}
-                    // Tombol tidak lagi disabled secara teknis agar onClick tetap berjalan
-                    className={`w-full py-4 text-white font-extrabold rounded-xl transition duration-300 shadow-xl ${isSubmitting ? 'bg-gray-400' : 'bg-blue-900 hover:bg-blue-800'
-                        }`}
-                >
-                    {isSubmitting ? 'Memproses...' : 'SUBMIT ABSEN PULANG'}
-                </button>
-
-                <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800 text-center">
-                    <p>Syarat Absen Pulang:</p>
-                    <ul className="list-disc list-inside text-left ml-4 mt-1">
-                        <li>Sudah Absen Masuk (Sistem akan mendeteksi shift terakhir yang belum di-checkout).</li>
+                <div className="mt-6 rounded-[28px] border border-[var(--djkn-blue)]/10 bg-[var(--djkn-blue)]/5 p-5 text-sm text-[var(--djkn-blue)] shadow-sm">
+                    <p className="font-black uppercase tracking-[0.18em] text-[var(--djkn-blue)]/70">Syarat Absen Pulang</p>
+                    <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                        <li>Sudah Absen Masuk (sistem akan mendeteksi shift terakhir yang belum di-checkout).</li>
                         <li>Logbook sudah disubmit (Status: COMPLETED).</li>
                         <li>Berada dalam radius kantor.</li>
                     </ul>
                 </div>
-            </main>
+            </div>
         </div>
     );
 }
