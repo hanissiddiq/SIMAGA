@@ -60,7 +60,7 @@ export default function DataPegawaiPage() {
         pegawaiList.filter(
           (p) =>
             p.full_name.toLowerCase().includes(lowerSearch) ||
-            p.position.toLowerCase().includes(lowerSearch)
+            p.role.toLowerCase().includes(lowerSearch)
         )
       );
     }

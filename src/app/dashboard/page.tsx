@@ -16,6 +16,7 @@ export default function DashboardPage() {
   const [currentShift, setCurrentShift] = useState<'pagi' | 'malam' | null>(null);
   const [hasCompletedLogbook, setHasCompletedLogbook] = useState(false);
   const [userData, setUserData] = useState({ fullName: "Loading...", email: "loading@kppn.go.id" });
+  const [userAvatar, setUserAvatar] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 //untuk rapor kinerja
@@ -39,14 +40,17 @@ export default function DashboardPage() {
       // 1. Profil user
       const profileRes = await supabase
         .from('profiles')
-        .select('full_name')
+        .select('full_name, avatar_url')
         .eq('id', user.id)
         .single();
+
+      const nextAvatar = profileRes.data?.avatar_url || localStorage.getItem('profile_avatar_url') || null;
 
       setUserData({ 
         fullName: profileRes.data?.full_name || user.email?.split('@')[0] || 'Pengguna KPPN', 
         email: user.email || 'N/A' 
       });
+      setUserAvatar(nextAvatar);
 
       // ------------------------------------------------------------------
       // LOGIC BARU: PRIORITASKAN CARI YANG "BELUM PULANG"
@@ -214,14 +218,28 @@ const handleSubmit = async () => {
       <header className="relative overflow-hidden rounded-b-[32px] bg-[var(--djkn-blue)] p-6 pb-20 text-white shadow-[0_18px_45px_rgba(0,95,172,0.25)]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(250,183,21,0.35),transparent_28%)]" />
         <div className="relative flex items-start justify-between gap-4">
-          <div className="flex items-center space-x-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--djkn-gold)] text-[var(--djkn-blue)] shadow-lg"><User size={24} /></div>
+          <button
+            onClick={() => router.push('/profile')}
+            className="flex flex-1 items-center justify-start space-x-3 rounded-2xl border border-white/10 bg-white/5 p-2 pr-3 text-left transition hover:bg-white/10"
+            aria-label="Buka profil pengguna"
+          >
+            {userAvatar ? (
+              <img
+                src={userAvatar}
+                alt={userData.fullName}
+                className="h-12 w-12 rounded-2xl object-cover shadow-lg ring-2 ring-white/30"
+              />
+            ) : (
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--djkn-gold)] text-[var(--djkn-blue)] shadow-lg">
+                <User size={24} />
+              </div>
+            )}
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-100">Selamat datang</p>
               <h1 className="mt-1 text-xl font-extrabold">{userData.fullName}</h1>
               <p className="text-sm text-blue-100">{userData.email}</p>
             </div>
-          </div>
+          </button>
           <button onClick={handleLogout} className="rounded-full border border-white/20 bg-white/10 p-2 text-white transition duration-200 hover:bg-white/20" aria-label="Logout"><LogOut size={22} /></button>
         </div>
       </header>

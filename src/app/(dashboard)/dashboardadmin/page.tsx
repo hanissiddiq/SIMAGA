@@ -474,7 +474,7 @@ export default function DashboardAdmin() {
 
       {/* HEADER */}
 
-      <header className="bg-blue-900 text-white p-6 pb-20 shadow-xl rounded-b-3xl">
+      <header className="bg-[var(--djkn-green)] text-white p-6 pb-20 shadow-xl rounded-b-3xl">
 
         <div className="flex justify-between items-start">
 

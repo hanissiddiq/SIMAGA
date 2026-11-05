@@ -143,6 +143,18 @@ export default function LogbookPegawaiAdminPage() {
     )
   }, [rawData, search])
 
+  const stats = useMemo(() => {
+    const total = filteredData.length
+    const random = filteredData.filter(
+      (item) => item.activity_name === 'random' || item.activity_name === 'atensi'
+    ).length
+    const approved = filteredData.filter(
+      (item) => item.activity_name === 'pimpinan'
+    ).length
+
+    return { total, random, approved }
+  }, [filteredData])
+
   /* RESET PAGE */
   useEffect(() => {
     setCurrentPage(1)
@@ -326,264 +338,274 @@ export default function LogbookPegawaiAdminPage() {
 
   /* ================= RENDER ================= */
   if (loading)
-    return <div className="p-10">Loading...</div>
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,#eaf4ff_0%,#f5f8fc_45%,#eef3f7_100%)] text-slate-700">
+        <div className="rounded-2xl border border-sky-200 bg-white px-8 py-5 shadow-lg shadow-sky-100">
+          Loading...
+        </div>
+      </div>
+    )
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,#eaf4ff_0%,#f5f8fc_38%,#edf3f7_100%)] p-4 md:p-6">
+      <div className="mx-auto max-w-[1600px]">
+        <header className="djkn-header mb-6 overflow-hidden rounded-[22px] border border-[#005fac]/20 shadow-[0_18px_45px_rgba(0,95,172,0.12)]">
+          <div className="flex flex-col gap-5 px-5 py-5 md:flex-row md:items-center md:justify-between md:px-7">
+            <div>
+              <p className="mb-2 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-sky-100">
+                DJKN Dashboard
+              </p>
+              <h1 className="text-2xl font-bold text-white md:text-3xl">
+                Logbook Pegawai
+              </h1>
+              <p className="mt-1 text-sm text-sky-100">
+                Kelola review logbook, approval, dan filter data pegawai dengan cepat.
+              </p>
+            </div>
 
-      {/* HEADER */}
-      <div className="flex flex-wrap gap-3 justify-between mb-4">
-
-        <div className="flex gap-2">
-
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-2 bg-gray-200 px-4 py-2 rounded"
-          >
-            <ArrowLeft size={18} />
-            Kembali
-          </button>
-
-          <button
-            onClick={exportExcel}
-            className="flex gap-2 bg-green-600 text-white px-4 py-2 rounded"
-          >
-            <FileSpreadsheet />
-            Export Excel
-          </button>
-        </div>
-
-        <div className="flex gap-2">
-
-          <button
-            onClick={() =>
-              setShowRandomOnly(!showRandomOnly)
-            }
-            className={`px-4 py-2 rounded text-white ${
-              showRandomOnly
-                ? 'bg-orange-600'
-                : 'bg-blue-600'
-            }`}
-          >
-            {showRandomOnly
-              ? 'Tampilkan Semua'
-              : 'Filter Random'}
-          </button>
-
-          <button
-            onClick={handleApprove}
-            className="flex items-center gap-2 bg-green-700 text-white px-4 py-2 rounded"
-          >
-            <CheckSquare size={18} />
-            Setujui Logbook
-          </button>
-          <button
-            onClick={handleAtensi}
-            className="flex items-center gap-2 bg-orange-700 text-white px-4 py-2 rounded"
-          >
-            <CheckSquare size={18} />
-            Atensi Logbook
-          </button>
-        </div>
-      </div>
-
-      {/* FILTER */}
-      <div className="bg-white p-4 rounded mb-4 flex flex-wrap gap-4">
-
-        <input
-          placeholder="Cari nama / jabatan / status"
-          value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
-          className="border px-3 py-2 w-64"
-        />
-
-        <select
-          value={filterMode}
-          onChange={(e) =>
-            setFilterMode(e.target.value as any)
-          }
-          className="border px-3 py-2"
-        >
-          <option value="daily">Harian</option>
-          <option value="monthly">Bulanan</option>
-        </select>
-
-        {filterMode === 'daily' ? (
-          <input
-            type="date"
-            value={selectedDate}
-            onChange={(e) =>
-              setSelectedDate(e.target.value)
-            }
-            className="border px-3 py-2"
-          />
-        ) : (
-          <input
-            type="month"
-            value={selectedMonth}
-            onChange={(e) =>
-              setSelectedMonth(e.target.value)
-            }
-            className="border px-3 py-2"
-          />
-        )}
-      </div>
-
-      {/* TABLE */}
-      <div className="overflow-auto">
-        <table className="w-full bg-white">
-
-          <thead className="bg-blue-900 text-white">
-            <tr>
-
-              <th className="p-2">
-                <input
-                  type="checkbox"
-                  onChange={handleSelectAll}
-                  checked={
-                    pageData.length > 0 &&
-                    pageData.every((item) =>
-                      selectedIds.includes(item.id)
-                    )
-                  }
-                />
-              </th>
-
-              <th className="p-2">No</th>
-              <th className="p-2">Nama</th>
-              <th className="p-2">Tanggal</th>
-              <th className="p-2">Shift</th>
-              <th className="p-2">Status</th>
-              <th className="p-2">Review</th>
-              <th className="p-2">Uraian</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {pageData.map((r, i) => (
-              <tr
-                key={r.id}
-                className="border-t hover:bg-gray-50"
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={() => router.back()}
+                className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-white/20"
               >
+                <ArrowLeft size={16} />
+                Kembali
+              </button>
 
-                <td className="p-2 text-center">
-                  <input
-                    type="checkbox"
-                    disabled={r.activity_name === 'pimpinan'}
-                    checked={
-                      r.activity_name === 'pimpinan'
-                        ? false
-                        : selectedIds.includes(r.id)
-                    }
-                    onChange={() => handleSelect(r.id)}
-                    className={`w-4 h-4 ${
-                      r.activity_name === 'pimpinan'
-                        ? 'cursor-not-allowed opacity-40'
-                        : 'cursor-pointer'
-                    }`}
-                  />
-                </td>
+              <button
+                onClick={exportExcel}
+                className="flex items-center gap-2 rounded-xl bg-[#02a54f] px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/20 transition hover:brightness-110"
+              >
+                <FileSpreadsheet size={16} />
+                Export Excel
+              </button>
+            </div>
+          </div>
 
-                <td className="p-2 text-center">
-                  {startIdx + i + 1}
-                </td>
+          <div className="grid gap-3 border-t border-white/10 bg-white/5 p-4 md:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm">
+              <p className="text-xs uppercase tracking-[0.18em] text-sky-100">Total Data</p>
+              <p className="mt-2 text-3xl font-bold text-white">{stats.total}</p>
+            </div>
+            <div className="rounded-2xl border border-[#fab715]/30 bg-[#fab715]/15 p-4 backdrop-blur-sm">
+              <p className="text-xs uppercase tracking-[0.18em] text-yellow-100">Butuh Review</p>
+              <p className="mt-2 text-3xl font-bold text-white">{stats.random}</p>
+            </div>
+            <div className="rounded-2xl border border-emerald-300/30 bg-emerald-500/15 p-4 backdrop-blur-sm">
+              <p className="text-xs uppercase tracking-[0.18em] text-emerald-100">Disetujui</p>
+              <p className="mt-2 text-3xl font-bold text-white">{stats.approved}</p>
+            </div>
+          </div>
+        </header>
 
-                <td className="p-2">
-                  <div className="font-semibold">
-                    {r.full_name}
-                  </div>
+        <div className="mb-6 rounded-[22px] border border-slate-200 bg-white/80 p-4 shadow-[0_12px_30px_rgba(15,23,42,0.06)] backdrop-blur-sm">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-1 flex-wrap gap-3">
+              <input
+                placeholder="Cari nama / jabatan / status"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="min-w-[220px] flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[#005fac] focus:bg-white focus:ring-4 focus:ring-sky-100"
+              />
 
-                  <div className="text-xs text-gray-500">
-                    {r.position}
-                  </div>
-                </td>
+              <select
+                value={filterMode}
+                onChange={(e) => setFilterMode(e.target.value as any)}
+                className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[#005fac] focus:bg-white focus:ring-4 focus:ring-sky-100"
+              >
+                <option value="daily">Harian</option>
+                <option value="monthly">Bulanan</option>
+              </select>
 
-                <td className="p-2">
-                  {format(
-                    new Date(r.attendance_date),
-                    'dd/MM/yyyy'
-                  )}
-                </td>
+              {filterMode === 'daily' ? (
+                <input
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[#005fac] focus:bg-white focus:ring-4 focus:ring-sky-100"
+                />
+              ) : (
+                <input
+                  type="month"
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                  className="rounded-xl border border-slate-200 bg-slate-50 px-3.5 py-2.5 text-sm text-slate-700 outline-none transition focus:border-[#005fac] focus:bg-white focus:ring-4 focus:ring-sky-100"
+                />
+              )}
+            </div>
 
-                <td className="p-2">
-                  {r.shift}
-                </td>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                onClick={() => setShowRandomOnly(!showRandomOnly)}
+                className={`rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-md transition ${
+                  showRandomOnly
+                    ? 'bg-[#fab715] text-slate-900 hover:bg-[#efb20a]'
+                    : 'bg-[#005fac] hover:bg-[#004c8a]'
+                }`}
+              >
+                {showRandomOnly ? 'Tampilkan Semua' : 'Filter Random'}
+              </button>
 
-                <td className="p-2">
-                  {r.status}
-                </td>
+              <button
+                onClick={handleApprove}
+                className="flex items-center gap-2 rounded-xl bg-[#02a54f] px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-emerald-500/20 transition hover:brightness-110"
+              >
+                <CheckSquare size={16} />
+                Setujui Logbook
+              </button>
 
-                <td className="p-2">
-                  {r.activity_name === 'random' || r.activity_name === 'atensi' ? (
-                    <span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs font-bold">
-                      {r.activity_name?.toUpperCase()}
-                    </span>
-                  ) : r.activity_name ===
-                    'pimpinan' ? (
-                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs font-bold">
-                      PIMPINAN
-                    </span>
-                  ) : (
-                    <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs font-bold">
-                      {r.activity_name || 'System'}
-                    </span>
-                  )}
-                </td>
+              <button
+                onClick={handleAtensi}
+                className="flex items-center gap-2 rounded-xl bg-[#f59e0b] px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-amber-500/20 transition hover:brightness-110"
+              >
+                <CheckSquare size={16} />
+                Atensi Logbook
+              </button>
+            </div>
+          </div>
+        </div>
 
-                <td className="p-2 text-sm">
-                  {r.uraian_kerja}
-                  <br />
-                  {r.description}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+        <div className="overflow-hidden rounded-[22px] border border-slate-200 bg-white shadow-[0_14px_35px_rgba(15,23,42,0.05)]">
+          <div className="overflow-x-auto">
+            <table className="min-w-full border-separate border-spacing-0">
+              <thead className="bg-[#005fac] text-white">
+                <tr>
+                  <th className="p-3 text-left text-sm font-semibold">
+                    <input
+                      type="checkbox"
+                      onChange={handleSelectAll}
+                      checked={
+                        pageData.length > 0 &&
+                        pageData.every((item) => selectedIds.includes(item.id))
+                      }
+                      className="h-4 w-4 accent-[#fab715]"
+                    />
+                  </th>
+                  <th className="p-3 text-left text-sm font-semibold">No</th>
+                  <th className="p-3 text-left text-sm font-semibold">Nama</th>
+                  <th className="p-3 text-left text-sm font-semibold">Tanggal</th>
+                  <th className="p-3 text-left text-sm font-semibold">Shift</th>
+                  <th className="p-3 text-left text-sm font-semibold">Status</th>
+                  <th className="p-3 text-left text-sm font-semibold">Review</th>
+                  <th className="p-3 text-left text-sm font-semibold">Uraian</th>
+                </tr>
+              </thead>
 
-      {/* PAGINATION */}
-      <div className="flex justify-center gap-1 mt-4">
+              <tbody>
+                {pageData.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="px-6 py-12 text-center text-sm text-slate-500">
+                      Tidak ada data yang sesuai dengan filter saat ini.
+                    </td>
+                  </tr>
+                ) : (
+                  pageData.map((r, i) => (
+                    <tr
+                      key={r.id}
+                      className="border-b border-slate-200 transition hover:bg-sky-50/60"
+                    >
+                      <td className="p-3 text-center align-top">
+                        <input
+                          type="checkbox"
+                          disabled={r.activity_name === 'pimpinan'}
+                          checked={
+                            r.activity_name === 'pimpinan'
+                              ? false
+                              : selectedIds.includes(r.id)
+                          }
+                          onChange={() => handleSelect(r.id)}
+                          className={`h-4 w-4 ${
+                            r.activity_name === 'pimpinan'
+                              ? 'cursor-not-allowed opacity-40 accent-slate-300'
+                              : 'cursor-pointer accent-[#005fac]'
+                          }`}
+                        />
+                      </td>
 
-        <button
-          disabled={currentPage === 1}
-          onClick={() =>
-            setCurrentPage((p) => p - 1)
-          }
-        >
-          <ChevronLeft />
-        </button>
+                      <td className="p-3 text-center align-top text-sm font-medium text-slate-600">
+                        {startIdx + i + 1}
+                      </td>
 
-        {getPages().map((p, i) =>
-          p === '...' ? (
-            <span key={i} className="px-2">
-              ...
-            </span>
-          ) : (
+                      <td className="p-3 align-top">
+                        <div className="font-semibold text-slate-800">{r.full_name}</div>
+                        <div className="mt-1 text-xs text-slate-500">{r.position}</div>
+                      </td>
+
+                      <td className="p-3 align-top text-sm text-slate-700">
+                        {format(new Date(r.attendance_date), 'dd/MM/yyyy')}
+                      </td>
+
+                      <td className="p-3 align-top text-sm text-slate-700">{r.shift}</td>
+
+                      <td className="p-3 align-top text-sm text-slate-700">{r.status}</td>
+
+                      <td className="p-3 align-top">
+                        {r.activity_name === 'random' || r.activity_name === 'atensi' ? (
+                          <span className="inline-flex rounded-full bg-yellow-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-yellow-700">
+                            {r.activity_name?.toUpperCase()}
+                          </span>
+                        ) : r.activity_name === 'pimpinan' ? (
+                          <span className="inline-flex rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-emerald-700">
+                            PIMPINAN
+                          </span>
+                        ) : (
+                          <span className="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-600">
+                            {r.activity_name || 'System'}
+                          </span>
+                        )}
+                      </td>
+
+                      <td className="p-3 align-top text-sm leading-6 text-slate-700">
+                        <div className="font-medium text-slate-800">{r.uraian_kerja}</div>
+                        <div className="mt-1 text-slate-500">{r.description}</div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {filteredData.length > 0 && (
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
             <button
-              key={i}
-              onClick={() =>
-                setCurrentPage(p as number)
-              }
-              className={`px-3 ${
-                p === currentPage &&
-                'bg-blue-600 text-white'
-              }`}
+              disabled={currentPage === 1 || totalPages === 0}
+              onClick={() => setCurrentPage((p) => p - 1)}
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-[#005fac] hover:text-[#005fac] disabled:cursor-not-allowed disabled:opacity-40"
             >
-              {p}
+              <ChevronLeft size={18} />
             </button>
-          )
-        )}
 
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() =>
-            setCurrentPage((p) => p + 1)
-          }
-        >
-          <ChevronRight />
-        </button>
+            {getPages().map((p, i) =>
+              p === '...' ? (
+                <span key={i} className="px-2 text-sm text-slate-500">
+                  ...
+                </span>
+              ) : (
+                <button
+                  key={i}
+                  onClick={() => setCurrentPage(p as number)}
+                  className={`flex h-10 min-w-10 items-center justify-center rounded-lg px-3 text-sm font-medium transition ${
+                    p === currentPage
+                      ? 'bg-[#005fac] text-white shadow-md shadow-sky-200'
+                      : 'border border-slate-200 bg-white text-slate-600 hover:border-[#005fac] hover:text-[#005fac]'
+                  }`}
+                >
+                  {p}
+                </button>
+              )
+            )}
+
+            <button
+              disabled={currentPage === totalPages || totalPages === 0}
+              onClick={() => setCurrentPage((p) => p + 1)}
+              className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 transition hover:border-[#005fac] hover:text-[#005fac] disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

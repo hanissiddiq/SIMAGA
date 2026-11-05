@@ -7,6 +7,7 @@ jika tidak mau login admin ikuti cara berikut
 2.lampiran_izin
 3.surat_sakit
 set (bucket_id = 'attendance-photos'::text)
+4.avatar-photos set (bucket_id = 'avatar-photos'::text)
 
 buat policy dalam bucket select delete insert
 
